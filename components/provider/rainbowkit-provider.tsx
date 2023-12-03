@@ -56,9 +56,10 @@ export function RainbowKitProviders({
         chains={chains}
         appInfo={appInfo}
         theme={lightTheme({
-          accentColor: "#4A6FA4",
+          accentColor: "#6789BA",
           accentColorForeground: "white",
         })}
+        modalSize="compact"
       >
         {mounted && children}
       </RainbowKitProvider>
