@@ -5,6 +5,7 @@ import {
   RainbowKitProvider,
   getDefaultWallets,
   connectorsForWallets,
+  lightTheme,
 } from "@rainbow-me/rainbowkit";
 import {
   metaMaskWallet,
@@ -51,7 +52,14 @@ export function RainbowKitProviders({
   React.useEffect(() => setMounted(true), []);
   return (
     <WagmiConfig config={wagmiConfig}>
-      <RainbowKitProvider chains={chains} appInfo={appInfo}>
+      <RainbowKitProvider
+        chains={chains}
+        appInfo={appInfo}
+        theme={lightTheme({
+          accentColor: "#4A6FA4",
+          accentColorForeground: "white",
+        })}
+      >
         {mounted && children}
       </RainbowKitProvider>
     </WagmiConfig>

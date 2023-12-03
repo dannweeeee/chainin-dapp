@@ -23,8 +23,8 @@ export default function Home() {
           <Image
             src="/assets/chainin-logo-white-no-bg.png"
             alt="logo"
-            width={210}
-            height={210}
+            width={220}
+            height={220}
           />
         </Link>
         <div className="flex items-center gap-1">
@@ -66,14 +66,6 @@ export default function Home() {
           </h1>
         ) : (
           <div className="flex flex-col items-center text-center">
-            <Link href="/">
-              <Image
-                src="/assets/chainin-icon-no-bg.png"
-                alt="logo"
-                width={100}
-                height={100}
-              />
-            </Link>
             <h1 className="font-semibold text-5xl text-center mt-3 text-[#E6E6E6]">
               Business & Employment-Focused dApp
             </h1>
@@ -83,7 +75,7 @@ export default function Home() {
             </h3>
             <div className="mt-10"></div>
             <div className="flex justify-center">
-              <ConnectButton />
+              <ConnectButton label="Sign In to ChainIn" />
             </div>
           </div>
         )}
