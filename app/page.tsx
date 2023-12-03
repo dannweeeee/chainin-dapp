@@ -18,7 +18,7 @@ export default function Home() {
   };
 
   const enterChainIn = () => {
-    router.push("/profile");
+    router.push("/onboarding");
   };
 
   return (
