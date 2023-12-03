@@ -9,12 +9,13 @@ import { Button } from "@/components/ui/button";
 import { Input } from "../ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { z, ZodError } from "zod";
+import { useAccount } from "wagmi";
 
 const userSchema = z.object({
   first_name: z.string().min(1, { message: "First name is required" }),
   last_name: z.string().min(1, { message: "Last name is required" }),
   email_address: z.string().email({ message: "Invalid email address" }),
-  description: z.string().min(0, { message: "Description is required" }),
+  biography: z.string().min(0, { message: "Biography is required" }),
 });
 
 type UserForm = z.infer<typeof userSchema>;
@@ -23,19 +24,37 @@ const UserForm = () => {
   const router = useRouter();
   const [isCreatingUser, setIsCreatingUser] = useState(false);
   const { control, handleSubmit } = useForm<UserForm>();
+  const { address } = useAccount();
 
   const handleCreateUser = async (data: UserForm) => {
-    // setIsCreatingUser(true);
-    // try {
-    //   const user = await ChainInService.createUser(data);
-    //   router.push(`/dashboard/profile/${user.user_id}`);
-    // } catch (error) {
-    //   if (error instanceof ZodError) {
-    //     console.log(error);
-    //   }
-    // } finally {
-    //   setIsCreatingUser(false);
-    // }
+    try {
+      setIsCreatingUser(true);
+
+      // to validate the form data against the schema
+      userSchema.parse(data);
+
+      // if validation passes, proceed with creating the user
+      console.log("Creating user with data:", data);
+      const post = await ChainInService.createUser(
+        address,
+        data.first_name,
+        data.last_name,
+        data.email_address,
+        data.biography
+      );
+      console.log("Post created:", post);
+      router.push("/home");
+    } catch (error) {
+      if (error instanceof ZodError) {
+        // handle Zod validation errors
+        console.error("Validation error:", error.errors);
+      } else {
+        // handle other errors
+        console.error("Error creating user:", error);
+      }
+    } finally {
+      setIsCreatingUser(false);
+    }
   };
 
   return (

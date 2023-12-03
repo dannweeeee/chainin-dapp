@@ -1,18 +1,18 @@
-const API_BASE_URL = "https://chainin-server-api.onrender.com";
+const API_BASE_URL = "https://chain-server-api.onrender.com";
 const HEADERS = {
   "Content-Type": "application/json",
 };
 
 const ApiMethods = {
-  GET: "GET",
-  POST: "POST",
-  PUT: "PUT",
-  DELETE: "DELETE",
+  GET: "get",
+  POST: "post",
+  PUT: "put",
+  DELETE: "delete",
 };
 
 const ChainInApi = {
   createUser: async (
-    wallet_address: string,
+    wallet_address: string | undefined,
     first_name: string,
     last_name: string,
     email_address: string,
