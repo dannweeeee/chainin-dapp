@@ -18,7 +18,11 @@ export default function Home() {
   };
 
   const enterChainIn = () => {
-    router.push("/onboarding");
+    {
+      status === "connected"
+        ? router.push("/home")
+        : router.push("/onboarding");
+    }
   };
 
   return (
