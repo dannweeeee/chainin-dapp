@@ -2,11 +2,13 @@
 import React, {useEffect, useState} from "react";
 import { Button } from "@/components/ui/button";
 import { ethers } from "ethers";
+import { useAccount } from "wagmi";
 
 import ChainInService from "@/components/api/chainin-api";
 import deployerABI from "../../../contracts/ABI/Deployer.json";
 
 export default function page () {
+  const { address } = useAccount();
   const [schoolAddr, setSchoolAddr] = useState(null);
   const [companyAddr, setCompanyAddr] = useState(null);
   const [orgName, setOrgName] = useState("");
@@ -15,7 +17,6 @@ export default function page () {
   const [description, setDescription] = useState("");
   const [pictureURL, setPictureURL] = useState("");
   const [websiteURL, setWebsiteURL] = useState("");
-  const [creatorAddr, setCreatorAddr] = useState("");
 
   useEffect(() => {
     schoolAddr ? createOrg(schoolAddr) : createOrg(companyAddr);
@@ -23,18 +24,20 @@ export default function page () {
 
   const createOrg = async (addr: any) => {
     try{
-      const post = await ChainInService.createOrganisation(
-        orgName,
-        orgSymbol,
-        orgType,
-        description,
-        pictureURL,
-        websiteURL,
-        creatorAddr,
-        addr
-      );
-
-      console.log("createOrg - ", post);
+      if(address !== undefined){
+        const post = await ChainInService.createOrganisation(
+          orgName,
+          orgSymbol,
+          orgType,
+          description,
+          pictureURL,
+          websiteURL,
+          address,
+          addr
+        );
+        
+        console.log("createOrg - ", post);
+      }      
     }catch(error){
       console.log("createOrg error - ", error);
     }
