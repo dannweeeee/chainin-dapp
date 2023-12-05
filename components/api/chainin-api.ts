@@ -133,7 +133,7 @@ const ChainInApi = {
   createOrganisation: async (
     organisation_name: string,
     organisation_symbol: string,
-    organisation_type: string,
+    organisation_type: number,
     description: string,
     picture_url: string,
     website_url: string,
