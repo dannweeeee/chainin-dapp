@@ -180,6 +180,22 @@ const ChainInApi = {
     }
   },
 
+  fetchOrganisationByOrganisationId: async (organisation_id: number) => {
+    const url = `${API_BASE_URL}/v1/organisation/id/${organisation_id}`;
+    const options = {
+      method: ApiMethods.GET,
+      headers: HEADERS,
+    };
+
+    const response = await fetch(url, options);
+    if (response.status === 200) {
+      const data = await response.json();
+      return data;
+    } else {
+      throw new Error(`Request failed with status ${response.status}`);
+    }
+  },
+
   fetchOrganisationByOrganisationName: async (organisation_name: string) => {
     const url = `${API_BASE_URL}/v1/organisation/name/${organisation_name}`;
     const options = {
@@ -190,17 +206,7 @@ const ChainInApi = {
     const response = await fetch(url, options);
     if (response.status === 200) {
       const data = await response.json();
-      return {
-        organisation_id: data.organisation_id,
-        organisation_name,
-        organisation_symbol: data.organisation_symbol,
-        organisation_type: data.organisation_type,
-        description: data.description,
-        picture_url: data.picture_url,
-        website_url: data.website_url,
-        creator_wallet_address: data.creator_wallet_address,
-        nft_contract_address: data.nft_contract_address,
-      };
+      return data;
     } else {
       throw new Error(`Request failed with status ${response.status}`);
     }
@@ -218,17 +224,7 @@ const ChainInApi = {
     const response = await fetch(url, options);
     if (response.status === 200) {
       const data = await response.json();
-      return {
-        organisation_id: data.organisation_id,
-        organisation_name: data.organisation_name,
-        organisation_symbol,
-        organisation_type: data.organisation_type,
-        description: data.description,
-        picture_url: data.picture_url,
-        website_url: data.website_url,
-        creator_wallet_address: data.creator_wallet_address,
-        nft_contract_address: data.nft_contract_address,
-      };
+      return data;
     } else {
       throw new Error(`Request failed with status ${response.status}`);
     }

@@ -34,6 +34,14 @@
   .organisation-card_avatar {
     @apply flex flex-1 items-start justify-start gap-3;
   }
+
+  .organisation-header {
+    @apply flex flex-col w-full ml-10 px-10 pt-10 bg-[#8AA4CA] rounded-3xl
+  }
+
+  .tab {
+    @apply flex min-h-[50px] ml-10 mt-3 flex-1 items-center gap-3 data-[state=active]:bg-[#6789BA] rounded-3xl font-semibold text-white text-lg !important;
+  }
 }
 
 @layer utilities {

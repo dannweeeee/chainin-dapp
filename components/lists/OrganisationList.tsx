@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import ChainInApi from "@/components/api/chainin-api";
 import OrganisationCard from "@/components/cards/OrganisationCard";
-import SkeletonLoading from "@/components/loading/SkeletonLoading";
+import OrganisationSkeletonLoading from "@/components/skeletons/OrganisationSkeletonLoading";
 
 interface Organisation {
   organisation_id: number;
@@ -45,7 +45,7 @@ function OrganisationList() {
   return (
     <div>
       {loading ? (
-        <SkeletonLoading />
+        <OrganisationSkeletonLoading />
       ) : exploreOrganisations ? (
         <>
           {exploreOrganisations.map((organisation) => (
