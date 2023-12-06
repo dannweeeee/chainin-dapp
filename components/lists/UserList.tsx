@@ -37,7 +37,7 @@ const UserList = () => {
   };
 
   return (
-    <section className="flex flex-col gap-2">
+    <section className="flex flex-col gap-2 mt-5">
       {loading ? (
         <div className="w-full">
           <SkeletonLoading />
