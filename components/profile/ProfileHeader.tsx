@@ -29,7 +29,6 @@ function ProfileHeader({ wallet_address }: Props) {
     const handleProfileDetails = async () => {
       try {
         setLoading(true);
-        console.log("wallet address", wallet_address);
         const data = await ChainInApi.fetchUserByWalletAddress(wallet_address);
         console.log("profile data", data);
         setProfileData(data);
@@ -42,12 +41,8 @@ function ProfileHeader({ wallet_address }: Props) {
     handleProfileDetails();
   }, [wallet_address]);
 
-  const openNewTab = (url: any) => {
-    window.open(url, "_blank");
-  };
-
   return (
-    <div className="flex w-full flex-col justify-star profile-header">
+    <div className="flex w-full flex-col justify-star profile-header mt-3">
       {loading ? (
         <ProfileSkeletonLoading />
       ) : (

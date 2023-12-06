@@ -10,7 +10,7 @@ const page = () => {
   return (
     <section>
       <div>
-        <Tabs defaultValue="user" className="w-full">
+        <Tabs defaultValue="user" className="w-full mt-3">
           <TabsList className="tab">
             {searchTabs.map((tab) => (
               <TabsTrigger key={tab.label} value={tab.value} className="tab">
