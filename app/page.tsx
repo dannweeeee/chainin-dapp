@@ -4,7 +4,7 @@ import ChainInApi from "@/components/api/chainin-api";
 import TypewriterTitle from "@/components/main/TypewriterTitle";
 import { Button } from "@/components/ui/button";
 import { ConnectButton, useConnectModal } from "@rainbow-me/rainbowkit";
-import { FileText, Github } from "lucide-react";
+import { DoorClosed, DoorOpen, FileText, Github } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -98,8 +98,16 @@ export default function Home() {
           </h3>
           <div className="mt-10"></div>
           <div className="flex-col justify-center">
-            <Button onClick={enterChainIn} className="h-12 w-44">
-              Enter ChainIn
+            <Button onClick={enterChainIn} className="h-12 gap-2">
+              {status === "connected" ? (
+                <>
+                  Enter ChainIn <DoorOpen />
+                </>
+              ) : (
+                <>
+                  Connect Wallet <DoorClosed />
+                </>
+              )}
             </Button>
           </div>
         </div>
