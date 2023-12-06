@@ -41,7 +41,7 @@ function OrganisationList() {
   }, []);
 
   return (
-    <div>
+    <div className="flex flex-col">
       {loading ? (
         <OrganisationSkeletonLoading />
       ) : exploreOrganisations ? (

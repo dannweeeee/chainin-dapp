@@ -28,7 +28,7 @@
   }
 
   .organisation-card {
-    @apply flex flex-col justify-between gap-4 text-white hover:bg-[#6789BA] hover:rounded-2xl rounded-lg px-5 py-5;
+    @apply flex flex-col justify-between gap-4 text-white bg-[#8AA4CA] rounded-2xl hover:bg-[#6789BA] hover:rounded-2xl px-5 py-5;
   }
   
   .organisation-card_avatar {
@@ -48,7 +48,7 @@
   }
 
   .job-card {
-    @apply flex flex-col justify-between gap-4 text-white hover:bg-[#6789BA] hover:rounded-2xl rounded-lg px-5 py-5 w-full;
+    @apply flex flex-col justify-between gap-4 text-white bg-[#8AA4CA] hover:bg-[#6789BA] hover:rounded-2xl rounded-2xl px-5 py-5 w-full;
   }
   
   .job-card_avatar {

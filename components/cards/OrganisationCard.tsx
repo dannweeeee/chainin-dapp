@@ -30,7 +30,7 @@ function OrganisationCard({
   const router = useRouter();
 
   return (
-    <article className="organisation-card mt-3 gap-10">
+    <article className="organisation-card mt-2">
       <Link
         href={`/organisation/${organisation_id}`}
         className="cursor-pointer"
