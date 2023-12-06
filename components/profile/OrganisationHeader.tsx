@@ -8,6 +8,7 @@ import ProfileSkeletonLoading from "@/components/skeletons/ProfileSkeletonLoadin
 import { BadgePlus, ExternalLink } from "lucide-react";
 import { Button } from "../ui/button";
 import { Dialog, Flex } from "@radix-ui/themes";
+import { QRCode } from "react-qr-svg";
 
 interface Props {
   organisation_id: number;
@@ -35,6 +36,41 @@ function OrganisationHeader({ organisation_id }: Props) {
   const [organisationData, setOrganisationData] =
     useState<OrganisationDetails | null>(null);
   const [loading, setLoading] = useState(true);
+  // update with your contract address
+  const deployedContractAddress = "0x1b9CaFa940303CA46408a9b9b924F67F8DB84213";
+  // more info on query based requests: https://0xpolygonid.github.io/tutorials/wallet/proof-generation/types-of-auth-requests-and-proofs/#query-based-request
+  // qrValueProofRequestExample: https://github.com/0xPolygonID/tutorial-examples/blob/main/on-chain-verification/qrValueProofRequestExample.json
+  const qrProofRequestJson = {
+    id: "7f38a193-0918-4a48-9fac-36adfdb8b542",
+    typ: "application/iden3comm-plain-json",
+    type: "https://iden3-communication.io/proofs/1.0/contract-invoke-request",
+    thid: "7f38a193-0918-4a48-9fac-36adfdb8b542",
+    body: {
+      reason: "airdrop participation",
+      transaction_data: {
+        contract_address: deployedContractAddress,
+        method_id: "b68967e2",
+        chain_id: 80001,
+        network: "polygon-mumbai",
+      },
+      scope: [
+        {
+          id: 1,
+          circuitId: "credentialAtomicQuerySigV2OnChain",
+          query: {
+            allowedIssuers: ["*"],
+            context: "ipfs://QmfUycCFuSkdeUMdgYPTPH29KMhw6u7jFThoa93YbHacko",
+            credentialSubject: {
+              isMember: {
+                $eq: 1,
+              },
+            },
+            type: "Membership",
+          },
+        },
+      ],
+    },
+  };
 
   useEffect(() => {
     const handleCommunitySearch = async () => {
@@ -81,6 +117,7 @@ function OrganisationHeader({ organisation_id }: Props) {
                 : "School"}
             </p>
           </div>
+
           <div className="mt-auto flex items-center justify-center gap-2">
             <Dialog.Root>
               <Dialog.Trigger>
@@ -97,9 +134,19 @@ function OrganisationHeader({ organisation_id }: Props) {
                   Polygon ID Verification
                 </Dialog.Title>
 
+                <Dialog.Description size="2" mb="4">
+                  Please scan this QR code with your mobile phone
+
+                  <QRCode
+                    level="Q"
+                    style={{ width: 256, marginTop: "20px" }}
+                    value={JSON.stringify(qrProofRequestJson)}
+                  />
+                </Dialog.Description>
+
                 <Flex gap="3" mt="4" justify="end">
                   <Dialog.Close>
-                    <Button variant="soft" color="gray">
+                    <Button variant="secondary" color="gray">
                       Cancel
                     </Button>
                   </Dialog.Close>
