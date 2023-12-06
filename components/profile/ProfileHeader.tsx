@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import ChainInApi from "@/components/api/chainin-api";
 import ProfileSkeletonLoading from "@/components/skeletons/ProfileSkeletonLoading";
-import { Mail, UserCog } from "lucide-react";
+import { BadgePlus, Mail, UserCog } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 
@@ -68,17 +68,30 @@ function ProfileHeader({ wallet_address }: Props) {
               {profileData?.biography}
             </p>
           </div>
-          <div className="flex items-center justify-center mb-auto gap-2">
-            <Button
-              onClick={() =>
-                router.push(`mailto:${profileData?.email_address}`)
-              }
-            >
-              <Mail />
-            </Button>
-            <Button>
-              <UserCog />
-            </Button>
+          <div className="flex-col items-center justify-center">
+            <div className="flex items-center justify-center mb-auto gap-2">
+              <Button
+                onClick={() =>
+                  router.push(`mailto:${profileData?.email_address}`)
+                }
+              >
+                <Mail />
+              </Button>
+              <Button>
+                <UserCog />
+              </Button>
+            </div>
+            <div className="mt-20">
+              <Button
+                className="text-sm gap-2"
+                onClick={() => {
+                  router.push(`/create-organisation/${wallet_address}`);
+                }}
+              >
+                <BadgePlus />
+                Create Organisation
+              </Button>
+            </div>
           </div>
         </div>
       )}
