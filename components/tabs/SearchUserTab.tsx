@@ -50,7 +50,7 @@ function SearchUserTab() {
           Search
         </Button>
       </div>
-      <div className="flex flex-col gap-9 rounded-lg p-5">
+      <div className="flex flex-col gap-9 rounded-lg p-5 mt-2">
         {userData ? (
           <UserCard
             key={userData.wallet_address}

@@ -15,15 +15,13 @@ export default function Home() {
   const router = useRouter();
   const { address, status } = useAccount();
   const { openConnectModal } = useConnectModal();
-  const [isLoading, setIsLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const checkWalletConnection = async () => {
       if (!address && openConnectModal) {
         openConnectModal();
         setTimeout(checkWalletConnection, 1000);
-      } else {
-        setIsLoading(false);
       }
     };
     checkWalletConnection();
@@ -35,13 +33,17 @@ export default function Home() {
 
   const enterChainIn = async () => {
     try {
+      setLoading(true);
       const userExists = await ChainInApi.fetchUserByWalletAddress(address);
       if (userExists) {
+        setLoading(false);
         router.push("/home");
       } else {
+        setLoading(false);
         router.push("/onboarding");
       }
     } catch (error) {
+      setLoading(false);
       console.error("Error fetching user:", error);
       router.push("/onboarding");
     }
@@ -98,8 +100,14 @@ export default function Home() {
           </h3>
           <div className="mt-10"></div>
           <div className="flex-col justify-center">
-            <Button onClick={enterChainIn} className="h-12 gap-2">
-              {status === "connected" ? (
+            <Button
+              id="enterChainInButton"
+              onClick={enterChainIn}
+              className="h-12 gap-2"
+            >
+              {loading ? (
+                "Entering ChainIn..."
+              ) : status === "connected" ? (
                 <>
                   Enter ChainIn <DoorOpen />
                 </>
