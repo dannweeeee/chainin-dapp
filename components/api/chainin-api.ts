@@ -59,7 +59,7 @@ const ChainInApi = {
     }
   },
 
-  fetchUserByWalletAddress: async (wallet_address: string) => {
+  fetchUserByWalletAddress: async (wallet_address: string | undefined) => {
     const url = `${API_BASE_URL}/v1/user/${wallet_address}`;
     const options = {
       method: ApiMethods.GET,

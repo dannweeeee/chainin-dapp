@@ -1,27 +1,49 @@
 "use client";
 
+import ChainInApi from "@/components/api/chainin-api";
 import TypewriterTitle from "@/components/main/TypewriterTitle";
 import { Button } from "@/components/ui/button";
-import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { ConnectButton, useConnectModal } from "@rainbow-me/rainbowkit";
 import { FileText, Github } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import { useAccount } from "wagmi";
 
 export default function Home() {
   const router = useRouter();
-  const { status } = useAccount();
+  const { address, status } = useAccount();
+  const { openConnectModal } = useConnectModal();
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const checkWalletConnection = async () => {
+      if (!address && openConnectModal) {
+        openConnectModal();
+        setTimeout(checkWalletConnection, 1000);
+      } else {
+        setIsLoading(false);
+      }
+    };
+    checkWalletConnection();
+  }, [address, openConnectModal]);
 
   const openNewTab = (url: any) => {
     window.open(url, "_blank");
   };
 
-  const enterChainIn = () => {
-    {
-      status === "connected"
-        ? router.push("/home")
-        : router.push("/onboarding");
+  const enterChainIn = async () => {
+    try {
+      const userExists = await ChainInApi.fetchUserByWalletAddress(address);
+      if (userExists) {
+        router.push("/home");
+      } else {
+        router.push("/onboarding");
+      }
+    } catch (error) {
+      console.error("Error fetching user:", error);
+      router.push("/onboarding");
     }
   };
 
@@ -76,7 +98,9 @@ export default function Home() {
           </h3>
           <div className="mt-10"></div>
           <div className="flex-col justify-center">
-            <Button onClick={enterChainIn}>Enter ChainIn</Button>
+            <Button onClick={enterChainIn} className="h-12 w-44">
+              Enter ChainIn
+            </Button>
           </div>
         </div>
       </div>
