@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import ChainInApi from "@/components/api/chainin-api";
 import ProfileSkeletonLoading from "@/components/skeletons/ProfileSkeletonLoading";
-import { ExternalLink } from "lucide-react";
+import { BadgePlus, ExternalLink } from "lucide-react";
 import { Button } from "../ui/button";
 
 interface Props {
@@ -80,16 +80,25 @@ function OrganisationHeader({ organisation_id }: Props) {
                 : "School"}
             </p>
           </div>
-          <Button
-            className="flex items-center justify-center text-base gap-2 mt-auto"
-            onClick={() =>
-              organisationData?.results?.[0]?.website_url &&
-              openNewTab(organisationData.results[0].website_url)
-            }
-          >
-            Visit Website
-            <ExternalLink className="w-5 h-5" />
-          </Button>
+          <div className="mt-auto flex items-center justify-center gap-2">
+            <Button
+              className="flex items-center justify-center text-base gap-2"
+              onClick={() => {}}
+            >
+              Add to Profile
+              <BadgePlus />
+            </Button>
+            <Button
+              className="flex items-center justify-center text-base gap-2 mt-auto"
+              onClick={() =>
+                organisationData?.results?.[0]?.website_url &&
+                openNewTab(organisationData.results[0].website_url)
+              }
+            >
+              Visit Website
+              <ExternalLink className="w-5 h-5" />
+            </Button>
+          </div>
         </div>
       )}
       <div className="mt-12 h-0.5 w-full bg-dark-3" />
