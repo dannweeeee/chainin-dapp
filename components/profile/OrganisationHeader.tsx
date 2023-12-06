@@ -73,7 +73,7 @@ function OrganisationHeader({ organisation_id }: Props) {
   };
 
   useEffect(() => {
-    const handleCommunitySearch = async () => {
+    const handleOrganisationDetails = async () => {
       try {
         setLoading(true);
         const data = await ChainInApi.fetchOrganisationByOrganisationId(
@@ -86,7 +86,7 @@ function OrganisationHeader({ organisation_id }: Props) {
         setLoading(false);
       }
     };
-    handleCommunitySearch();
+    handleOrganisationDetails();
   }, [organisation_id]);
 
   const openNewTab = (url: any) => {
@@ -121,22 +121,17 @@ function OrganisationHeader({ organisation_id }: Props) {
           <div className="mt-auto flex items-center justify-center gap-2">
             <Dialog.Root>
               <Dialog.Trigger>
-                <Button
-                  className="flex items-center justify-center text-base gap-2"
-                >
+                <Button className="flex items-center justify-center text-base gap-2">
                   Add to Profile
                   <BadgePlus />
                 </Button>
               </Dialog.Trigger>
 
               <Dialog.Content>
-                <Dialog.Title>
-                  Polygon ID Verification
-                </Dialog.Title>
+                <Dialog.Title>Polygon ID Verification</Dialog.Title>
 
                 <Dialog.Description size="2" mb="4">
                   Please scan this QR code with your mobile phone
-
                   <QRCode
                     level="Q"
                     style={{ width: 256, marginTop: "20px" }}
@@ -154,9 +149,9 @@ function OrganisationHeader({ organisation_id }: Props) {
                     <Button>Save</Button>
                   </Dialog.Close>
                 </Flex>
-              </Dialog.Content>              
+              </Dialog.Content>
             </Dialog.Root>
-            
+
             <Button
               className="flex items-center justify-center text-base gap-2 mt-auto"
               onClick={() =>

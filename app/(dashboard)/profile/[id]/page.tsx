@@ -1,7 +1,12 @@
+import ProfileHeader from "@/components/profile/ProfileHeader";
 import React from "react";
 
-const page = () => {
-  return <div>page</div>;
+const ProfilePage = ({ params }: { params: { id: string } }) => {
+  return (
+    <section>
+      <ProfileHeader wallet_address={params.id} />
+    </section>
+  );
 };
 
-export default page;
+export default ProfilePage;

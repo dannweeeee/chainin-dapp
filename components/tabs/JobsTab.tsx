@@ -70,7 +70,7 @@ const JobsTab = ({ organisation_id }: { organisation_id: number }) => {
           />
         ))
       ) : (
-        <p className="!text-base-regular text-light-3 no-result mt-10">
+        <p className="text-white font-semibold no-result mt-10 items-center justify-center flex ml-10">
           No Jobs Currently
         </p>
       )}

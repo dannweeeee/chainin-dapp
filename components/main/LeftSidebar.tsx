@@ -3,12 +3,12 @@
 import { sidebarLinks } from "@/constants";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
-import OrganisationList from "../lists/OrganisationList";
+import { usePathname } from "next/navigation";
+import { useAccount } from "wagmi";
 
 function LeftSidebar() {
-  const router = useRouter();
   const pathname = usePathname();
+  const { address } = useAccount();
 
   return (
     <section className="custom-scrollbar leftsidebar text-heading4-medium">
@@ -17,6 +17,10 @@ function LeftSidebar() {
           const isActive =
             (pathname.includes(link.route) && link.route.length > 1) ||
             pathname === link.route;
+
+          if (link.route === "/profile")
+            link.route = `${link.route}/${address}`;
+
           return (
             <Link
               href={link.route}

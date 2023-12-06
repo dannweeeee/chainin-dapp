@@ -67,15 +67,10 @@ const ChainInApi = {
     };
 
     const response = await fetch(url, options);
+    console.log(response);
     if (response.status === 200) {
       const data = await response.json();
-      return {
-        wallet_address,
-        first_name: data.first_name,
-        last_name: data.last_name,
-        email_address: data.email_address,
-        biography: data.biography,
-      };
+      return data;
     } else {
       throw new Error(`Request failed with status ${response.status}`);
     }
