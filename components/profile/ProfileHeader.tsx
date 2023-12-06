@@ -7,6 +7,7 @@ import ProfileSkeletonLoading from "@/components/skeletons/ProfileSkeletonLoadin
 import { BadgePlus, Mail, UserCog } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
+import { useAccount } from "wagmi";
 
 interface Props {
   wallet_address: string;
@@ -24,6 +25,7 @@ function ProfileHeader({ wallet_address }: Props) {
   const [profileData, setProfileData] = useState<ProfileDetails | null>(null);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
+  const { address } = useAccount();
 
   useEffect(() => {
     const handleProfileDetails = async () => {
@@ -72,21 +74,25 @@ function ProfileHeader({ wallet_address }: Props) {
               >
                 <Mail />
               </Button>
-              <Button>
-                <UserCog />
-              </Button>
+              {address === wallet_address ? (
+                <Button>
+                  <UserCog />
+                </Button>
+              ) : null}
             </div>
-            <div className="mt-20">
-              <Button
-                className="text-sm gap-2"
-                onClick={() => {
-                  router.push(`/create-organisation/${wallet_address}`);
-                }}
-              >
-                <BadgePlus />
-                Create Organisation
-              </Button>
-            </div>
+            {address === wallet_address ? (
+              <div className="mt-20">
+                <Button
+                  className="text-sm gap-2"
+                  onClick={() => {
+                    router.push(`/create-organisation/${wallet_address}`);
+                  }}
+                >
+                  <BadgePlus />
+                  Create Organisation
+                </Button>
+              </div>
+            ) : null}
           </div>
         </div>
       )}
