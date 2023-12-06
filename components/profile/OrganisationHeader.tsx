@@ -7,6 +7,7 @@ import ChainInApi from "@/components/api/chainin-api";
 import ProfileSkeletonLoading from "@/components/skeletons/ProfileSkeletonLoading";
 import { BadgePlus, ExternalLink } from "lucide-react";
 import { Button } from "../ui/button";
+import { Dialog, Flex } from "@radix-ui/themes";
 
 interface Props {
   organisation_id: number;
@@ -81,13 +82,34 @@ function OrganisationHeader({ organisation_id }: Props) {
             </p>
           </div>
           <div className="mt-auto flex items-center justify-center gap-2">
-            <Button
-              className="flex items-center justify-center text-base gap-2"
-              onClick={() => {}}
-            >
-              Add to Profile
-              <BadgePlus />
-            </Button>
+            <Dialog.Root>
+              <Dialog.Trigger>
+                <Button
+                  className="flex items-center justify-center text-base gap-2"
+                >
+                  Add to Profile
+                  <BadgePlus />
+                </Button>
+              </Dialog.Trigger>
+
+              <Dialog.Content>
+                <Dialog.Title>
+                  Polygon ID Verification
+                </Dialog.Title>
+
+                <Flex gap="3" mt="4" justify="end">
+                  <Dialog.Close>
+                    <Button variant="soft" color="gray">
+                      Cancel
+                    </Button>
+                  </Dialog.Close>
+                  <Dialog.Close>
+                    <Button>Save</Button>
+                  </Dialog.Close>
+                </Flex>
+              </Dialog.Content>              
+            </Dialog.Root>
+            
             <Button
               className="flex items-center justify-center text-base gap-2 mt-auto"
               onClick={() =>

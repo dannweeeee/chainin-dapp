@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { RainbowKitProviders } from "@/components/provider/rainbowkit-provider";
 import "@rainbow-me/rainbowkit/styles.css";
+import '@radix-ui/themes/styles.css';
 
 const inter = Inter({ subsets: ["latin"] });
 
