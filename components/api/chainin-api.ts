@@ -234,7 +234,7 @@ const ChainInApi = {
     organisation_id: number,
     organisation_name: string,
     organisation_symbol: string,
-    organisation_type: string,
+    organisation_type: number,
     description: string,
     picture_url: string,
     website_url: string,
@@ -285,6 +285,144 @@ const ChainInApi = {
   //////////////////////////////////////
   //////////// JOB LISTING /////////////
   //////////////////////////////////////
+
+  createListing: async (
+    organisation_id: number,
+    listing_title: string,
+    employment_status: string,
+    location: string,
+    description: string
+  ) => {
+    const url = `${API_BASE_URL}/v1/organisation`;
+    const options = {
+      method: ApiMethods.POST,
+      headers: HEADERS,
+      body: JSON.stringify({
+        organisation_id,
+        listing_title,
+        employment_status,
+        location,
+        description,
+      }),
+    };
+
+    const response = await fetch(url, options);
+
+    if (response.status === 200) {
+      return response.json();
+    } else {
+      throw new Error(`Request failed with status ${response.status}`);
+    }
+  },
+
+  fetchAllListings: async () => {
+    const url = `${API_BASE_URL}/v1/listing`;
+    const options = {
+      method: ApiMethods.GET,
+      headers: HEADERS,
+    };
+    const response = await fetch(url, options);
+    if (response.status === 200) {
+      const data = await response.json();
+      return data;
+    } else {
+      throw new Error(`Request failed with status ${response.status}`);
+    }
+  },
+
+  fetchListingsByListingId: async (listing_id: number) => {
+    const url = `${API_BASE_URL}/v1/listing/id/${listing_id}`;
+    const options = {
+      method: ApiMethods.GET,
+      headers: HEADERS,
+    };
+
+    const response = await fetch(url, options);
+    if (response.status === 200) {
+      const data = await response.json();
+      return data;
+    } else {
+      throw new Error(`Request failed with status ${response.status}`);
+    }
+  },
+
+  fetchListingByListingTitle: async (listing_title: string) => {
+    const url = `${API_BASE_URL}/v1/listing/title/${listing_title}`;
+    const options = {
+      method: ApiMethods.GET,
+      headers: HEADERS,
+    };
+
+    const response = await fetch(url, options);
+    if (response.status === 200) {
+      const data = await response.json();
+      return data;
+    } else {
+      throw new Error(`Request failed with status ${response.status}`);
+    }
+  },
+
+  fetchListingByOrganisationId: async (organisation_id: number) => {
+    const url = `${API_BASE_URL}/v1/listing/organisation/${organisation_id}`;
+    const options = {
+      method: ApiMethods.GET,
+      headers: HEADERS,
+    };
+
+    const response = await fetch(url, options);
+    if (response.status === 200) {
+      const data = await response.json();
+      return data;
+    } else {
+      throw new Error(`Request failed with status ${response.status}`);
+    }
+  },
+
+  updateListingByListingId: async (
+    listing_id: number,
+    organisation_id: number,
+    listing_title: string,
+    employment_status: string,
+    location: string,
+    description: string
+  ) => {
+    const url = `${API_BASE_URL}/v1/listing/${listing_id}`;
+    const options = {
+      method: ApiMethods.PUT,
+      headers: HEADERS,
+      body: JSON.stringify({
+        organisation_id,
+        listing_title,
+        employment_status,
+        location,
+        description,
+      }),
+    };
+
+    const response = await fetch(url, options);
+
+    if (response.status === 200) {
+      return response.json();
+    } else {
+      throw new Error(`Request failed with status ${response.status}`);
+    }
+  },
+
+  deleteListingByListingId: async (listing_id: number) => {
+    const url = `${API_BASE_URL}/v1/listing/${listing_id}`;
+    const options = {
+      method: ApiMethods.DELETE,
+      headers: HEADERS,
+    };
+
+    const response = await fetch(url, options);
+
+    if (response.status === 200) {
+      return response.json();
+    } else {
+      throw new Error(`Request failed with status ${response.status}`);
+    }
+  },
 };
 
 export default ChainInApi;

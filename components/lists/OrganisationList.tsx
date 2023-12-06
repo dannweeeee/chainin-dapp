@@ -40,8 +40,6 @@ function OrganisationList() {
     fetchOrganisations();
   }, []);
 
-  console.log("LIST OF ORGANISATIONS", exploreOrganisations);
-
   return (
     <div>
       {loading ? (

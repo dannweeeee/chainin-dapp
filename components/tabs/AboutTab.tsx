@@ -8,10 +8,6 @@ import { MousePointerClick } from "lucide-react";
 import { Button } from "../ui/button";
 import DetailsSkeletonLoading from "../skeletons/DetailsSkeletonLoading";
 
-interface Props {
-  organisation_id: number;
-}
-
 interface OrganisationDetails {
   meta: {
     duration: number;
@@ -30,7 +26,7 @@ interface OrganisationDetails {
   }[];
 }
 
-function OrganisationHeader({ organisation_id }: Props) {
+function OrganisationHeader({ organisation_id }: { organisation_id: number }) {
   const [organisationData, setOrganisationData] =
     useState<OrganisationDetails | null>(null);
   const [loading, setLoading] = useState(true);
@@ -51,10 +47,6 @@ function OrganisationHeader({ organisation_id }: Props) {
     };
     handleCommunitySearch();
   }, [organisation_id]);
-
-  const openNewTab = (url: any) => {
-    window.open(url, "_blank");
-  };
 
   return (
     <div className="flex w-full flex-col justify-start organisation-header mt-5 pt-3">

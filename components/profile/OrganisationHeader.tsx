@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import ChainInApi from "@/components/api/chainin-api";
 import ProfileSkeletonLoading from "@/components/skeletons/ProfileSkeletonLoading";
-import { MousePointerClick } from "lucide-react";
+import { ExternalLink } from "lucide-react";
 import { Button } from "../ui/button";
 
 interface Props {
@@ -75,7 +75,9 @@ function OrganisationHeader({ organisation_id }: Props) {
               {organisationData?.results[0].organisation_name}
             </p>
             <p className="text-base mt-1 text-white">
-              {organisationData?.results[0].organisation_type}
+              {organisationData?.results[0].organisation_type === "1"
+                ? "Company"
+                : "School"}
             </p>
           </div>
           <Button
@@ -86,7 +88,7 @@ function OrganisationHeader({ organisation_id }: Props) {
             }
           >
             Visit Website
-            <MousePointerClick className="w-5 h-5" />
+            <ExternalLink className="w-5 h-5" />
           </Button>
         </div>
       )}

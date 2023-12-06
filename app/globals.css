@@ -42,6 +42,14 @@
   .tab {
     @apply flex min-h-[50px] ml-10 mt-3 flex-1 items-center gap-3 data-[state=active]:bg-[#6789BA] rounded-3xl font-semibold text-white text-lg !important;
   }
+
+  .job-card {
+    @apply flex flex-col justify-between gap-4 text-white hover:bg-[#6789BA] hover:rounded-2xl rounded-lg px-5 py-5 w-full;
+  }
+  
+  .job-card_avatar {
+    @apply flex flex-1 items-start justify-start gap-3;
+  }
 }
 
 @layer utilities {
