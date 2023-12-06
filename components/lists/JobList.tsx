@@ -42,7 +42,7 @@ const JobList = () => {
   return (
     <section className="flex flex-col">
       {loading ? (
-        <div className="ml-10 w-full">
+        <div className="w-full">
           <SkeletonLoading />
         </div>
       ) : jobs && jobs.length > 0 ? (

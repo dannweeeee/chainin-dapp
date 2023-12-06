@@ -2,7 +2,7 @@
 
 import ChainInApi from "@/components/api/chainin-api";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import UserCard from "@/components/cards/UserCard";
@@ -23,7 +23,6 @@ function SearchUserTab() {
   const handleUserSearch = async () => {
     try {
       const data = await ChainInApi.fetchUserByWalletAddress(walletAddress);
-      console.log("USER DATA", data);
       setUserData(data);
     } catch (error) {
       console.error("Error fetching user data:", error);

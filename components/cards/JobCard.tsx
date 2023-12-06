@@ -30,7 +30,7 @@ const JobCard = ({
   organisation_name,
 }: JobProps) => {
   return (
-    <article className="job-card mt-3 gap-10 ml-10">
+    <article className="job-card gap-10">
       <Link href={`/listing/${listing_id}`} className="cursor-pointer">
         <div className="job-card_avatar flex flex-wrap gap-3 items-center">
           <div className="relative h-12 w-12">

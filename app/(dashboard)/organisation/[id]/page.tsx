@@ -31,7 +31,7 @@ async function OrganisationDetailsPage({ params }: { params: { id: number } }) {
           <TabsContent value="about" className="w-full text-light-1">
             <AboutTab organisation_id={params.id} />
           </TabsContent>
-          <TabsContent value="jobs" className="w-full text-light-1">
+          <TabsContent value="jobs" className="w-full text-light-1 ml-10">
             <JobsTab organisation_id={params.id} />
           </TabsContent>
         </Tabs>

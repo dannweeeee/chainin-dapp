@@ -48,9 +48,9 @@ const JobsTab = ({ organisation_id }: { organisation_id: number }) => {
   };
 
   return (
-    <section className="flex flex-col">
+    <section className="flex flex-col mt-5">
       {loading ? (
-        <div className="ml-10 w-full">
+        <div className="w-full">
           <SkeletonLoading />
         </div>
       ) : jobs && jobs.results.length > 0 ? (
