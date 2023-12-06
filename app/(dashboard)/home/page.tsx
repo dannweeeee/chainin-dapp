@@ -19,10 +19,15 @@ export default function page () {
   const [websiteURL, setWebsiteURL] = useState("");
 
   useEffect(() => {
+    if(schoolAddr === null && companyAddr === null) return;
+
     schoolAddr ? createOrg(schoolAddr) : createOrg(companyAddr);
   }, [schoolAddr, companyAddr]);
 
   const createOrg = async (addr: any) => {
+    console.log("schoolAddr - ", schoolAddr);
+    console.log("companyAddr - ", companyAddr);
+
     try{
       if(address !== undefined){
         const post = await ChainInService.createOrganisation(
