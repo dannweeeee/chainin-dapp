@@ -6,33 +6,25 @@ import JobCard from "@/components/cards/JobCard";
 import JobSkeletonLoading from "@/components/skeletons/JobSkeletonLoading";
 
 interface ListingDetails {
-  meta: {
-    duration: number;
-  };
-  success: boolean;
-  results: {
-    listing_id: number;
-    listing_title: string;
-    employment_status: string;
-    location: string;
-    description: string;
-    organisation_id: number;
-    organisation_logo: string;
-    organisation_name: string;
-  }[];
+  listing_id: number;
+  listing_title: string;
+  employment_status: string;
+  location: string;
+  description: string;
+  organisation_id: number;
+  organisation_logo: string;
+  organisation_name: string;
 }
 
-const JobsTab = ({ organisation_id }: { organisation_id: number }) => {
-  const [jobs, setJobs] = useState<ListingDetails | null>(null);
+const JobList = () => {
+  const [jobs, setJobs] = useState<ListingDetails[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const handleJobListByOrganisation = async () => {
+    const handleJobList = async () => {
       try {
         setLoading(true);
-        const data = await ChainInApi.fetchListingByOrganisationId(
-          organisation_id
-        );
+        const data = await ChainInApi.fetchAllListings();
         setJobs(data);
       } catch (error) {
         console.error("Error fetching jobs:", error);
@@ -40,12 +32,14 @@ const JobsTab = ({ organisation_id }: { organisation_id: number }) => {
         setLoading(false);
       }
     };
-    handleJobListByOrganisation();
-  }, [organisation_id]);
+    handleJobList();
+  }, []);
 
   const openNewTab = (url: any) => {
     window.open(url, "_blank");
   };
+
+  console.log("LIST OF JOBS", jobs);
 
   return (
     <section className="flex flex-col">
@@ -53,8 +47,8 @@ const JobsTab = ({ organisation_id }: { organisation_id: number }) => {
         <div className="ml-10 w-full">
           <JobSkeletonLoading />
         </div>
-      ) : jobs && jobs.results.length > 0 ? (
-        jobs.results.map((job) => (
+      ) : jobs && jobs.length > 0 ? (
+        jobs.map((job) => (
           <JobCard
             key={job.listing_id}
             listing_id={job.listing_id}
@@ -76,4 +70,4 @@ const JobsTab = ({ organisation_id }: { organisation_id: number }) => {
   );
 };
 
-export default JobsTab;
+export default JobList;

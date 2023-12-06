@@ -26,7 +26,7 @@ interface OrganisationDetails {
   }[];
 }
 
-function OrganisationHeader({ organisation_id }: { organisation_id: number }) {
+function AboutTab({ organisation_id }: { organisation_id: number }) {
   const [organisationData, setOrganisationData] =
     useState<OrganisationDetails | null>(null);
   const [loading, setLoading] = useState(true);
@@ -85,4 +85,4 @@ function OrganisationHeader({ organisation_id }: { organisation_id: number }) {
   );
 }
 
-export default OrganisationHeader;
+export default AboutTab;
