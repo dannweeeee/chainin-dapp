@@ -66,7 +66,7 @@ function ProfileHeader({ wallet_address }: Props) {
             </p>
           </div>
           <div className="flex-col items-center justify-center">
-            <div className="flex items-center justify-center mb-auto gap-2">
+            <div className="flex items-center justify-end mb-auto gap-2">
               <Button
                 onClick={() =>
                   router.push(`mailto:${profileData?.email_address}`)
@@ -81,7 +81,7 @@ function ProfileHeader({ wallet_address }: Props) {
               ) : null}
             </div>
             {address === wallet_address ? (
-              <div className="mt-20">
+              <div className="mt-5">
                 <Button
                   className="text-sm gap-2"
                   onClick={() => {

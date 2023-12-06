@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import ChainInApi from "@/components/api/chainin-api";
 import ProfileSkeletonLoading from "@/components/skeletons/ProfileSkeletonLoading";
-import { BadgePlus, ExternalLink, PlusSquare } from "lucide-react";
+import { BadgePlus, Cog, ExternalLink, PlusSquare } from "lucide-react";
 import { Button } from "../ui/button";
 import { Dialog, Flex } from "@radix-ui/themes";
 import { QRCode } from "react-qr-svg";
@@ -124,17 +124,22 @@ function OrganisationHeader({ organisation_id }: Props) {
 
           <div className="mt-auto flex flex-col gap-2">
             {address === organisationData?.results[0].creator_wallet_address ? (
-              <Button
-                className="flex items-center justify-center text-base gap-2"
-                onClick={() => {
-                  router.push(
-                    `/create-job/${organisationData?.results[0].organisation_id}`
-                  );
-                }}
-              >
-                Create Job
-                <PlusSquare />
-              </Button>
+              <div className="flex justify-end gap-2">
+                <Button
+                  className="flex items-center justify-center text-base gap-2"
+                  onClick={() => {
+                    router.push(
+                      `/create-job/${organisationData?.results[0].organisation_id}`
+                    );
+                  }}
+                >
+                  Create Job
+                  <PlusSquare />
+                </Button>
+                <Button className="flex items-center justify-center text-base gap-2">
+                  <Cog />
+                </Button>
+              </div>
             ) : null}
             <div className="flex items-center justify-center mt-12 gap-2">
               <Dialog.Root>
