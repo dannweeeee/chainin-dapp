@@ -3,7 +3,7 @@
 import ChainInApi from "@/components/api/chainin-api";
 import { useEffect, useState } from "react";
 import JobCard from "@/components/cards/JobCard";
-import JobSkeletonLoading from "@/components/skeletons/JobSkeletonLoading";
+import SkeletonLoading from "@/components/skeletons/SkeletonLoading";
 
 interface ListingDetails {
   meta: {
@@ -51,7 +51,7 @@ const JobsTab = ({ organisation_id }: { organisation_id: number }) => {
     <section className="flex flex-col">
       {loading ? (
         <div className="ml-10 w-full">
-          <JobSkeletonLoading />
+          <SkeletonLoading />
         </div>
       ) : jobs && jobs.results.length > 0 ? (
         jobs.results.map((job) => (

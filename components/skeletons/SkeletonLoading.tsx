@@ -1,6 +1,6 @@
 import React from "react";
 
-function JobSkeletonLoading() {
+function SkeletonLoading() {
   return (
     <div>
       <div className="bg-[#6789BA] shadow rounded-2xl p-2 w-full mt-5">
@@ -37,4 +37,4 @@ function JobSkeletonLoading() {
   );
 }
 
-export default JobSkeletonLoading;
+export default SkeletonLoading;

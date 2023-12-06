@@ -54,6 +54,30 @@
   .job-card_avatar {
     @apply flex flex-1 items-start justify-start gap-3;
   }
+
+  .no-focus {
+    @apply focus-visible:ring-0 focus-visible:ring-transparent focus-visible:ring-offset-0 !important;
+  }
+
+  .searchbar {
+    @apply flex gap-1 rounded-lg px-4 py-2;
+  }
+
+  .searchbar_input {
+    @apply border-none outline-none bg-[#8AA4CA] rounded-3xl !important;
+  }
+
+  .user-card {
+    @apply flex flex-col justify-between gap-4 bg-[#8AA4CA] hover:bg-[#6789BA] rounded-2xl px-5 py-5;
+  }
+
+  .user-card_avatar {
+    @apply flex flex-1 items-start justify-start gap-3;
+  }
+
+  .user-card_btn {
+    @apply h-auto min-w-[74px] rounded-lg text-[12px] font-semibold text-white !important;
+  }
 }
 
 @layer utilities {

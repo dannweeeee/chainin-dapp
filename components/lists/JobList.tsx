@@ -3,7 +3,7 @@
 import ChainInApi from "@/components/api/chainin-api";
 import { useEffect, useState } from "react";
 import JobCard from "@/components/cards/JobCard";
-import JobSkeletonLoading from "@/components/skeletons/JobSkeletonLoading";
+import SkeletonLoading from "@/components/skeletons/SkeletonLoading";
 
 interface ListingDetails {
   listing_id: number;
@@ -39,13 +39,11 @@ const JobList = () => {
     window.open(url, "_blank");
   };
 
-  console.log("LIST OF JOBS", jobs);
-
   return (
     <section className="flex flex-col">
       {loading ? (
         <div className="ml-10 w-full">
-          <JobSkeletonLoading />
+          <SkeletonLoading />
         </div>
       ) : jobs && jobs.length > 0 ? (
         jobs.map((job) => (
