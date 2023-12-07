@@ -9,6 +9,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { PacmanLoader, SyncLoader } from "react-spinners";
 import { useAccount } from "wagmi";
 
 export default function Home() {
@@ -103,10 +104,13 @@ export default function Home() {
             <Button
               id="enterChainInButton"
               onClick={enterChainIn}
-              className="h-12 gap-2"
+              className="h-12 gap-2 bg-[#4A6FA4] hover:bg-[#6789BA] hover:border text-[#E6E6E6] hover:text-[#E6E6E6]"
             >
               {loading ? (
-                "Entering ChainIn..."
+                <>
+                  Entering ChainIn
+                  <SyncLoader size={5} color="#E6E6E6" />
+                </>
               ) : status === "connected" ? (
                 <>
                   Enter ChainIn <DoorOpen />
