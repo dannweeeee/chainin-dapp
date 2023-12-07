@@ -288,7 +288,7 @@ const ChainInApi = {
     location: string,
     description: string
   ) => {
-    const url = `${API_BASE_URL}/v1/organisation`;
+    const url = `${API_BASE_URL}/v1/listing`;
     const options = {
       method: ApiMethods.POST,
       headers: HEADERS,
