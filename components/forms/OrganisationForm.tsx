@@ -7,7 +7,7 @@ import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { Input } from "../ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { z, ZodError } from "zod";
+import { z } from "zod";
 import { useAccount } from "wagmi";
 import { SyncLoader } from "react-spinners";
 import { ethers } from "ethers";
@@ -148,7 +148,7 @@ const OrganistionForm = () => {
   return (
     <form
       onSubmit={handleSubmit(handleCreateOrganisation)}
-      className="mt-12 flex flex-col justify-center gap-5 text-white"
+      className="ml-10 mt-2 flex flex-col justify-center gap-5 text-white"
     >
       <label className="flex font-bold text-xl items-center justify-center mb-5">
         Create an Organisation
@@ -165,7 +165,7 @@ const OrganistionForm = () => {
       <div className="flex items-center w-full gap-2">
         <label className="font-semibold">Organisation Symbol</label>
         <Input
-          className="w-40 rounded-2xl"
+          className="w-32 rounded-2xl"
           label="Organisation Symbol"
           {...(control as any).register("organisation_symbol", {
             required: "Organisation symbol is required",
@@ -221,7 +221,7 @@ const OrganistionForm = () => {
             <SyncLoader size={5} color="#E6E6E6" />
           </>
         ) : (
-          "Submit"
+          "Create"
         )}
       </Button>
     </form>
