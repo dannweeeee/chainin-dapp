@@ -165,7 +165,7 @@ const OrganistionForm = () => {
       <div className="flex items-center w-full gap-2">
         <label className="font-semibold">Organisation Symbol</label>
         <Input
-          className="w-32 rounded-2xl"
+          className="w-36 rounded-2xl"
           label="Organisation Symbol"
           {...(control as any).register("organisation_symbol", {
             required: "Organisation symbol is required",
