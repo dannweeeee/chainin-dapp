@@ -116,9 +116,14 @@ function OrganisationHeader({ organisation_id }: Props) {
               {organisationData?.results[0].organisation_name}
             </p>
             <p className="text-base mt-1 text-white">
-              {organisationData?.results[0].organisation_type === "1"
-                ? "Company"
-                : "School"}
+              {organisationData?.results[0].organisation_type
+                ? parseInt(
+                    organisationData.results[0].organisation_type,
+                    10
+                  ) === 1
+                  ? "Company"
+                  : "School"
+                : "Unknown"}
             </p>
           </div>
 
