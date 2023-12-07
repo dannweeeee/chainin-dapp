@@ -122,7 +122,7 @@ const JobForm = ({ organisation_id }: JobFormProps) => {
             <SyncLoader size={5} color="#E6E6E6" />
           </>
         ) : (
-          "Create Job"
+          "Create"
         )}
       </Button>
     </form>
