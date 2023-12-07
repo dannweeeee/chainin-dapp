@@ -132,7 +132,7 @@ const ChainInApi = {
     description: string,
     picture_url: string,
     website_url: string,
-    creator_wallet_address: string,
+    creator_wallet_address: string | undefined,
     nft_contract_address: string
   ) => {
     const url = `${API_BASE_URL}/v1/organisation`;

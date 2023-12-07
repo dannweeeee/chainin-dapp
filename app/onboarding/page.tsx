@@ -2,11 +2,6 @@
 
 import UserForm from "@/components/forms/UserForm";
 import Topbar from "@/components/main/Topbar";
-import { Button } from "@/components/ui/button";
-import { ConnectButton } from "@rainbow-me/rainbowkit";
-import { FileText, Github } from "lucide-react";
-import Image from "next/image";
-import Link from "next/link";
 import React from "react";
 
 const page = () => {

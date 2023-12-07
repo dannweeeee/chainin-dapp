@@ -10,6 +10,7 @@ import { Input } from "../ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { z, ZodError } from "zod";
 import { useAccount } from "wagmi";
+import { SyncLoader } from "react-spinners";
 
 const userSchema = z.object({
   first_name: z.string().min(1, { message: "First name is required" }),
@@ -35,14 +36,14 @@ const UserForm = () => {
 
       // if validation passes, proceed with creating the user
       console.log("Creating user with data:", data);
-      const post = await ChainInService.createUser(
+      const user = await ChainInService.createUser(
         address,
         data.first_name,
         data.last_name,
         data.email_address,
         data.biography
       );
-      console.log("Post created:", post);
+      console.log("User created:", user);
       router.push("/home");
     } catch (error) {
       if (error instanceof ZodError) {
@@ -103,8 +104,19 @@ const UserForm = () => {
           required: "Biography is required",
         })}
       />
-      <Button type="submit" disabled={isCreatingUser}>
-        {isCreatingUser ? "Creating User..." : "Submit"}
+      <Button
+        type="submit"
+        disabled={isCreatingUser}
+        className="h-12 gap-2 bg-[#4A6FA4] hover:bg-[#6789BA] hover:border text-[#E6E6E6] hover:text-[#E6E6E6]"
+      >
+        {isCreatingUser ? (
+          <>
+            Creating User
+            <SyncLoader size={5} color="#E6E6E6" />
+          </>
+        ) : (
+          "Submit"
+        )}
       </Button>
     </form>
   );
