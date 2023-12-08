@@ -75,7 +75,11 @@ function ProfileHeader({ wallet_address }: Props) {
                 <Mail />
               </Button>
               {address === wallet_address ? (
-                <Button>
+                <Button
+                  onClick={() => {
+                    router.push(`/edit-profile/${wallet_address}`);
+                  }}
+                >
                   <UserCog />
                 </Button>
               ) : null}
