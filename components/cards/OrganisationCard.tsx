@@ -38,7 +38,7 @@ function OrganisationCard({
         <div className="organisation-card_avatar flex flex-wrap items-center gap-3">
           <div className="relative h-12 w-12">
             <Image
-              src={picture_url}
+              src={picture_url || "/assets/placeholder.png"}
               alt="organisation_logo"
               fill
               className="rounded-full object-cover"

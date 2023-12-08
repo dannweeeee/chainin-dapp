@@ -49,7 +49,7 @@ function AboutTab({ organisation_id }: { organisation_id: number }) {
   }, [organisation_id]);
 
   return (
-    <div className="flex w-full flex-col justify-start organisation-header mt-5 pt-3">
+    <div className="flex w-full flex-col justify-start organisation-content mt-5 pt-3">
       {loading ? (
         <div className="mt-10">
           <DetailsSkeletonLoading />

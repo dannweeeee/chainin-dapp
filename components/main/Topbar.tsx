@@ -20,7 +20,7 @@ function Topbar() {
 
   return (
     <nav className="topbar py-8 px-5">
-      <Link href="/" className="absolute">
+      <Link href="/home" className="absolute">
         <Image
           src="/assets/chainin-logo-white-no-bg.png"
           alt="logo"
