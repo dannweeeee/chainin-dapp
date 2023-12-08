@@ -93,13 +93,17 @@ export default function Home() {
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full">
         <div className="flex flex-col items-center text-center">
           <h1 className="font-semibold text-5xl text-center mt-3 text-[#E6E6E6]">
-            Business & Employment-Focused dApp
+            Business & Employment Aggregator dApp
           </h1>
           <div className="mt-6"></div>
-          <h3 className="font-semibold text-2xl text-center text-[#E6E6E6]">
+          <p className="font-semibold text-2xl text-center mt-3 text-[#E6E6E6]">
+            🚀 Decentralising Careers, Connecting Futures 🚀
+          </p>
+          <div className="mt-6"></div>
+          <h3 className="font-semibold text-xl text-center text-[#E6E6E6]">
             <TypewriterTitle />
           </h3>
-          <div className="mt-10"></div>
+          <div className="mt-6"></div>
           <div className="flex-col justify-center">
             <Button
               id="enterChainInButton"
