@@ -33,7 +33,6 @@ type OrganisationForm = z.infer<typeof organisationSchema>;
 
 const OrganistionForm = () => {
   const router = useRouter();
-  const [deployedAddress, setDeployedAddress] = useState<string>("");
   const [isCreatingOrganisation, setIsCreatingOrganisation] = useState(false);
   const { control, handleSubmit } = useForm<OrganisationForm>();
   const { address } = useAccount();
@@ -52,7 +51,7 @@ const OrganistionForm = () => {
       const provider = new ethers.providers.JsonRpcProvider(
         `https://polygon-mumbai.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_MUMBAI_API_KEY}`
       );
-      const deployerAddr = "0x619360550f337bdA5A3A4709fEff2140c9577593"; // deployer contract on mumbai
+      const deployerAddr = "0x2EcE59e879F97E3f398cB12810db8F671c27A10E"; // deployer contract on mumbai
       const signer = new ethers.Wallet(
         `0x${process.env.NEXT_PUBLIC_MUMBAI_PRIVATE_KEY}`,
         provider
@@ -98,31 +97,19 @@ const OrganistionForm = () => {
       //https://docs.ethers.org/v5/api/utils/abi/interface/
       let schoolIFace = new ethers.utils.Interface(schoolABI);
       let companyIFace = new ethers.utils.Interface(companyABI);
+      let deployedAddress = "";
 
       receipt.logs.forEach((log: any) => {
         if (log.topics[0] == newSchoolSignature) {
           const parsedLog = schoolIFace.parseLog(log);
-          const schoolAddr = parsedLog.args[0]; // address need to be stored
-          setDeployedAddress(schoolAddr);
-          const hashed_name = parsedLog.args[1].hash; // indexed string parameter is the keccak256(name)
-          const hash_imageURL = parsedLog.args[2].hash; // indexed string parameter is the keccak256(imageURL)
-          const description = parsedLog.args[3]; // original string
+          deployedAddress = parsedLog.args[0]; // address of the deployed school
 
-          console.log("New school deployed on ", schoolAddr);
+          console.log("New school deployed on ", deployedAddress);
         } else if (log.topics[0] == newCompanySignature) {
           const parsedLog = companyIFace.parseLog(log);
-          const companyAddr = parsedLog.args[0]; // address need to be stored
-          setDeployedAddress(companyAddr);
-          const hashed_name = parsedLog.args[1].hash; // indexed string parameter is the keccak256(name)
-          const hash_imageURL = parsedLog.args[2].hash; // indexed string parameter is the keccak256(imageURL)
-          const description = parsedLog.args[3]; // original string
+          deployedAddress = parsedLog.args[0]; // address of the deployed company
 
-          console.log("New company deployed on ", companyAddr);
-        } else {
-          console.log(
-            "No new organisation deployed in logIndex: ",
-            log.logIndex
-          );
+          console.log("New company deployed on ", deployedAddress);
         }
       });
 
@@ -137,11 +124,11 @@ const OrganistionForm = () => {
         deployedAddress
       );
       console.log("Organisation created:", organisation);
+
+      setIsCreatingOrganisation(false);
+      router.push(`/organisation/${organisation.organisation_id}`);
     } catch (error) {
       console.error("Error deploying organisation:", error);
-    } finally {
-      setIsCreatingOrganisation(false);
-      router.push(`/profile/${address}`);
     }
   };
 
