@@ -1,3 +1,5 @@
+import { list } from "postcss";
+
 const API_BASE_URL = "https://chain-server-api.onrender.com";
 const HEADERS = {
   "Content-Type": "application/json",
@@ -414,6 +416,133 @@ const ChainInApi = {
 
     if (response.status === 200) {
       return response.json();
+    } else {
+      throw new Error(`Request failed with status ${response.status}`);
+    }
+  },
+  ////////////////////////////
+  //////// Application ///////
+  ////////////////////////////
+  newApplication: async (
+    subgraph_id: string,
+    applicant_wallet_address: string,
+    listing_id: number,
+    profile_url: string
+  ) => {
+    const url = `${API_BASE_URL}/v1/application`;
+    const options = {
+      method: ApiMethods.POST,
+      headers: HEADERS,
+      body: JSON.stringify({
+        subgraph_id,
+        applicant_wallet_address,
+        listing_id,
+        profile_url,
+      }),
+    };
+    const response = await fetch(url, options);
+
+    if (response.status === 200) {
+      return response.json();
+    } else {
+      throw new Error(`Request failed with status ${response.status}`);
+    }
+  },
+
+  fetchAllApplication: async () => {
+    const url = `${API_BASE_URL}/v1/application`;
+    const options = {
+      method: ApiMethods.GET,
+      headers: HEADERS,
+    };
+    const response = await fetch(url, options);
+    if (response.status === 200) {
+      const data = await response.json();
+      return data;
+    } else {
+      throw new Error(`Request failed with status ${response.status}`);
+    }
+  },
+
+  fetchApplicationBySubgraphID: async (subgraph_id: string) => {
+    const url = `${API_BASE_URL}/v1/application/subgraph/${subgraph_id}`;
+    const options = {
+      method: ApiMethods.GET,
+      headers: HEADERS,
+    };
+    const response = await fetch(url, options);
+    if (response.status === 200) {
+      const data = await response.json();
+      return data;
+    } else {
+      throw new Error(`Request failed with status ${response.status}`);
+    }
+  },
+
+  fetchApplicationByWallet: async (wallet: string) => {
+    const url = `${API_BASE_URL}/v1/application/user/${wallet}`;
+    const options = {
+      method: ApiMethods.GET,
+      headers: HEADERS,
+    };
+    const response = await fetch(url, options);
+    if (response.status === 200) {
+      const data = await response.json();
+      return data;
+    } else {
+      throw new Error(`Request failed with status ${response.status}`);
+    }
+  },
+
+  fetchApplicationByListingID: async (listing_id: number) => {
+    const url = `${API_BASE_URL}/v1/applicant/listing/${listing_id}`;
+    const options = {
+      method: ApiMethods.GET,
+      headers: HEADERS,
+    };
+    const response = await fetch(url, options);
+    if (response.status === 200) {
+      const data = await response.json();
+      return data;
+    } else {
+      throw new Error(`Request failed with status ${response.status}`);
+    }
+  },
+  UpdateApplicationBySubgraphID: async (
+    subgraph_id: string,
+    applicant_wallet_address: string,
+    listing_id: number,
+    profile_url: string
+  ) => {
+    const url = `${API_BASE_URL}/v1/application/${subgraph_id}`;
+    const options = {
+      method: ApiMethods.PUT,
+      headers: HEADERS,
+      body: JSON.stringify({
+        application_wallet_address: applicant_wallet_address,
+        listing_id: listing_id,
+        profile_url: profile_url,
+      }),
+    };
+    const response = await fetch(url, options);
+    if (response.status === 200) {
+      const data = await response.json();
+      return data;
+    } else {
+      throw new Error(`Request failed with status ${response.status}`);
+    }
+  },
+
+  DeleteApplicationBySubgraphID: async (subgraph_id: string) => {
+    const url = `${API_BASE_URL}/v1/application/${subgraph_id}`;
+    const options = {
+      method: ApiMethods.DELETE,
+      headers: HEADERS,
+    };
+    const response = await fetch(url, options);
+    if (response.status === 200) {
+      const data = await response.json();
+      return data;
     } else {
       throw new Error(`Request failed with status ${response.status}`);
     }
