@@ -8,7 +8,7 @@ import ProfileSkeletonLoading from "@/components/skeletons/ProfileSkeletonLoadin
 import { BadgePlus, Cog, ExternalLink, PlusSquare } from "lucide-react";
 import { Button } from "../ui/button";
 import { Dialog, Flex } from "@radix-ui/themes";
-import { QRCode } from "react-qr-svg";
+import { QRCodeSVG } from "qrcode.react";
 import { useAccount } from "wagmi";
 import { useRouter } from "next/navigation";
 
@@ -158,14 +158,15 @@ function OrganisationHeader({ organisation_id }: Props) {
                   </Button>
                 </Dialog.Trigger>
 
-                <Dialog.Content>
+                <Dialog.Content className="flex items-center justify-center flex-col">
                   <Dialog.Title>Polygon ID Verification</Dialog.Title>
 
                   <Dialog.Description size="2" mb="4">
                     Please scan this QR code with your mobile phone
-                    <QRCode
+                    <QRCodeSVG
                       level="Q"
-                      style={{ width: 256, marginTop: "20px" }}
+                      size={350}
+                      style={{ marginTop: "20px" }}
                       value={JSON.stringify(qrProofRequestJson)}
                     />
                   </Dialog.Description>
