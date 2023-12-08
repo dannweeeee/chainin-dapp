@@ -4,16 +4,10 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import ChainInApi from "@/components/api/chainin-api";
 import ProfileSkeletonLoading from "@/components/skeletons/ProfileSkeletonLoading";
-import {
-  BadgePlus,
-  Hand,
-  HardHat,
-  Mail,
-  MapPinned,
-  UserCog,
-} from "lucide-react";
+import { FileEdit, Hand, HardHat, MapPinned } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
+import { useAccount } from "wagmi";
 
 interface Props {
   listing_id: number;
@@ -39,8 +33,8 @@ interface JobDetails {
 
 function JobHeader({ listing_id }: Props) {
   const [jobData, setJobData] = useState<JobDetails | null>(null);
-  const [isAdmin, setIsAdmin] = useState(false);
   const [loading, setLoading] = useState(true);
+  const { address } = useAccount();
   const router = useRouter();
 
   useEffect(() => {
@@ -91,15 +85,26 @@ function JobHeader({ listing_id }: Props) {
               <MapPinned />
               {jobData?.results[0].location}
             </p>
-            <p className="text-base mt-10 text-white flex flex-col">
+            <p className="text-base mt-10 text-white flex flex-col w-full">
               <span className="font-bold text-lg">Job Description</span>
               {jobData?.results[0].description}
             </p>
           </div>
-          <Button className="text-sm gap-2 mb-auto">
-            <Hand />
-            Apply for Job
-          </Button>
+          {jobData?.results[0].organisation_creator === address ? (
+            <Button
+              className="text-sm gap-2 mb-auto"
+              onClick={() => {
+                router.push(`/edit-job/${listing_id}`);
+              }}
+            >
+              <FileEdit />
+            </Button>
+          ) : (
+            <Button className="text-sm gap-2 mb-auto">
+              <Hand />
+              Apply for Job
+            </Button>
+          )}
         </div>
       )}
       <div className="mt-12 h-0.5 w-full bg-dark-3" />

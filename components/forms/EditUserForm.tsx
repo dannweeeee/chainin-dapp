@@ -25,14 +25,6 @@ const userSchema = z.object({
 
 type EditUserForm = z.infer<typeof userSchema>;
 
-interface UserDetails {
-  wallet_address: string;
-  first_name: string;
-  last_name: string;
-  email_address: string;
-  biography: string;
-}
-
 const EditUserForm = ({ wallet_address }: EditUserFormProps) => {
   const router = useRouter();
   const [isEditingUser, setIsEditingUser] = useState(false);
@@ -74,7 +66,7 @@ const EditUserForm = ({ wallet_address }: EditUserFormProps) => {
       userSchema.parse(data);
 
       // if validation passes, proceed with creating the user
-      console.log("Creating job with data:", data);
+      console.log("Creating user with data:", data);
       const updateUser = await ChainInService.updateUserByWalletAddress(
         wallet_address,
         data.first_name,
