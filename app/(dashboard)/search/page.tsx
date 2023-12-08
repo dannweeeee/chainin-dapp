@@ -9,7 +9,7 @@ import React from "react";
 const page = () => {
   return (
     <section>
-      <div>
+      <div className="ml-16">
         <Tabs defaultValue="user" className="w-full mt-3">
           <TabsList className="tab">
             {searchTabs.map((tab) => (

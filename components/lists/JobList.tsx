@@ -60,7 +60,7 @@ const JobList = () => {
           />
         ))
       ) : (
-        <p className="text-white font-semibold no-result mt-10 items-center justify-center flex ml-10">
+        <p className="font-semibold flex items-center justify-center mt-8 text-white">
           No Jobs Currently
         </p>
       )}

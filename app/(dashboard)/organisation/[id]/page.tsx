@@ -10,7 +10,7 @@ async function OrganisationDetailsPage({ params }: { params: { id: number } }) {
     <section>
       <OrganisationHeader organisation_id={params.id} />
       <div>
-        <Tabs defaultValue="about" className="w-full">
+        <Tabs defaultValue="about" className="w-full ml-10">
           <TabsList className="tab">
             {organisationTabs.map((tab) => (
               <TabsTrigger key={tab.label} value={tab.value} className="tab">
@@ -31,7 +31,7 @@ async function OrganisationDetailsPage({ params }: { params: { id: number } }) {
           <TabsContent value="about" className="w-full text-light-1">
             <AboutTab organisation_id={params.id} />
           </TabsContent>
-          <TabsContent value="jobs" className="w-full text-light-1 ml-10">
+          <TabsContent value="jobs" className="w-full text-light-1">
             <JobsTab organisation_id={params.id} />
           </TabsContent>
         </Tabs>
