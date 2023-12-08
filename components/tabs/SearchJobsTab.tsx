@@ -40,7 +40,7 @@ function SearchJobsTab() {
   };
 
   return (
-    <div className="ml-10 mt-10">
+    <div className="mt-10">
       <div className="searchbar">
         <Image
           src="/assets/search.svg"

@@ -62,7 +62,7 @@ function OrganisationList() {
           ))}
         </>
       ) : (
-        <p className="text-base-regular text-light-3 mt-8">
+        <p className="font-semibold flex items-center justify-center mt-8 text-white">
           No Organisations Currently
         </p>
       )}

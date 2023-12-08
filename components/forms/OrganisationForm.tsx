@@ -7,7 +7,7 @@ import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { Input } from "../ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { z } from "zod";
+import { ZodError, z } from "zod";
 import { useAccount } from "wagmi";
 import { SyncLoader } from "react-spinners";
 import { ethers } from "ethers";
@@ -112,23 +112,35 @@ const OrganistionForm = () => {
           console.log("New company deployed on ", deployedAddress);
         }
       });
+      try {
+        const organisation = await ChainInApi.createOrganisation(
+          data.organisation_name,
+          data.organisation_symbol,
+          organisationTypeNumber,
+          data.description,
+          data.picture_url,
+          data.website_url,
+          address,
+          deployedAddress
+        );
 
-      const organisation = await ChainInApi.createOrganisation(
-        data.organisation_name,
-        data.organisation_symbol,
-        organisationTypeNumber,
-        data.description,
-        data.picture_url,
-        data.website_url,
-        address,
-        deployedAddress
-      );
-      console.log("Organisation created:", organisation);
+        console.log("Organisation created:", organisation);
 
-      setIsCreatingOrganisation(false);
-      router.push(`/organisation/${organisation.organisation_id}`);
+        setIsCreatingOrganisation(false);
+        router.push(`/organisation/${organisation.organisation_id}`);
+      } catch (error) {
+        if (error instanceof ZodError) {
+          // handle Zod validation errors
+          console.error("Validation error:", error.errors);
+        } else {
+          // handle other errors
+          console.error("Error creating user:", error);
+        }
+        setIsCreatingOrganisation(false);
+      }
     } catch (error) {
       console.error("Error deploying organisation:", error);
+      setIsCreatingOrganisation(false);
     }
   };
 

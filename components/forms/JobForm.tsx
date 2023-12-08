@@ -40,15 +40,15 @@ const JobForm = ({ organisation_id }: JobFormProps) => {
 
       // if validation passes, proceed with creating the user
       console.log("Creating job with data:", data);
-      const user = await ChainInService.createListing(
-        organisation_id, 
+      const job = await ChainInService.createListing(
+        organisation_id,
         data.listing_title,
         data.employment_status,
         data.location,
         data.description
       );
-      console.log("Job created:", user);
-      router.push(`/organisation/${organisation_id}`);
+      console.log("Job created:", job);
+      router.push(`/listing/${job.listing_id}`);
     } catch (error) {
       if (error instanceof ZodError) {
         // handle Zod validation errors

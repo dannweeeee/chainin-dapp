@@ -106,7 +106,10 @@ function OrganisationHeader({ organisation_id }: Props) {
           <div className="flex-col items-center gap-3">
             <div className="relative h-20 w-20 object-cover">
               <Image
-                src={organisationData?.results[0].picture_url || ""}
+                src={
+                  organisationData?.results[0].picture_url ||
+                  "/assets/placeholder.png"
+                }
                 alt="organisation_logo"
                 fill
                 className="rounded-full object-cover shadow-2xl"

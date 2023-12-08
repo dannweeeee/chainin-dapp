@@ -72,7 +72,7 @@ function JobHeader({ listing_id }: Props) {
               <Image
                 src={
                   jobData?.results[0].organisation_logo ||
-                  "/assets/landmark.svg"
+                  "/assets/placeholder.png"
                 }
                 alt="profile_picture"
                 fill
