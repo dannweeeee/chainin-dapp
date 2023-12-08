@@ -132,7 +132,7 @@ const EditUserForm = ({ wallet_address }: EditUserFormProps) => {
       <Textarea
         className="rounded-2xl"
         label="Biography"
-        rows={8}
+        rows={3}
         maxLength={1024}
         {...(control as any).register("biography", {
           required: "Biography is required",

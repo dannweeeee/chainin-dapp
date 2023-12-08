@@ -99,7 +99,7 @@ const UserForm = () => {
       <Textarea
         className="rounded-2xl"
         label="Biography"
-        rows={8}
+        rows={3}
         {...(control as any).register("biography", {
           required: "Biography is required",
         })}
