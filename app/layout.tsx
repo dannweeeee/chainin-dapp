@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     "Polygon ID",
   ],
   openGraph: {
-    images: "/assets/chainin-logo.png",
+    images: "https://github.com/usechainin/.github/blob/main/assets/chainin-logo.png?raw=true",
   },
 };
 
