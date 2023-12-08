@@ -144,7 +144,12 @@ function OrganisationHeader({ organisation_id }: Props) {
                   Create Job
                   <PlusSquare />
                 </Button>
-                <Button className="flex items-center justify-center text-base gap-2">
+                <Button
+                  className="flex items-center justify-center text-base gap-2"
+                  onClick={() => {
+                    router.push(`/edit-organisation/${organisation_id}`);
+                  }}
+                >
                   <Cog />
                 </Button>
               </div>

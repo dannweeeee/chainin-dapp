@@ -148,7 +148,7 @@ const EditJobForm = ({ listing_id }: EditJobFormProps) => {
       >
         {isEditingJob ? (
           <>
-            Updating Job
+            Updating Listing
             <SyncLoader size={5} color="#E6E6E6" />
           </>
         ) : (
