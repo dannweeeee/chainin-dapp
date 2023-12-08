@@ -17,6 +17,7 @@ type JobProps = {
   organisation_id: number;
   organisation_logo: string;
   organisation_name: string;
+  organisation_creator: string;
 };
 
 const JobCard = ({
@@ -28,6 +29,7 @@ const JobCard = ({
   organisation_id,
   organisation_logo,
   organisation_name,
+  organisation_creator,
 }: JobProps) => {
   return (
     <article className="job-card mt-2">

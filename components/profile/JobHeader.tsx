@@ -33,11 +33,13 @@ interface JobDetails {
     organisation_id: number;
     organisation_logo: string;
     organisation_name: string;
+    organisation_creator: string;
   }[];
 }
 
 function JobHeader({ listing_id }: Props) {
   const [jobData, setJobData] = useState<JobDetails | null>(null);
+  const [isAdmin, setIsAdmin] = useState(false);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
@@ -56,10 +58,6 @@ function JobHeader({ listing_id }: Props) {
     };
     handleJobDetails();
   }, [listing_id]);
-
-  const openNewTab = (url: any) => {
-    window.open(url, "_blank");
-  };
 
   return (
     <div className="flex w-full flex-col justify-star profile-header mt-3">
@@ -98,7 +96,7 @@ function JobHeader({ listing_id }: Props) {
               {jobData?.results[0].description}
             </p>
           </div>
-          <Button className="text-sm gap-2 mt-auto">
+          <Button className="text-sm gap-2 mb-auto">
             <Hand />
             Apply for Job
           </Button>
