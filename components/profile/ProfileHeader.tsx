@@ -113,12 +113,12 @@ function ProfileHeader({ wallet_address }: Props) {
                     <DialogTrigger className="bg-[#FF6961] text-[#E6E6E6] hover:bg-[#E6E6E6]  hover:text-[#4A6FA4] text-lg font-bold rounded-2xl cursor-pointer h-10 px-4 py-2">
                       <UserRoundX />
                     </DialogTrigger>
-                    <DialogContent className="bg-[#ADBFDA] border-none">
+                    <DialogContent className="bg-[#E6E6E6] border-none">
                       <DialogHeader>
-                        <DialogTitle className="text-white flex items-center justify-center mb-4">
+                        <DialogTitle className="text-[#4A6FA4] flex items-center justify-center mb-4">
                           Are you absolutely sure?
                         </DialogTitle>
-                        <DialogDescription className="text-white">
+                        <DialogDescription className="text-[#4A6FA4]">
                           This action cannot be undone. This will permanently
                           delete your account and remove your data from our
                           servers.
@@ -126,10 +126,12 @@ function ProfileHeader({ wallet_address }: Props) {
                       </DialogHeader>
                       <div className="flex items-center mt-3">
                         <DialogClose asChild>
-                          <Button className="text-sm">Cancel</Button>
+                          <Button className="text-sm hover:bg-[#ADBFDA]">
+                            Cancel
+                          </Button>
                         </DialogClose>
                         <Button
-                          className="text-sm ml-auto bg-[#FF6961] gap-2"
+                          className="text-sm ml-auto bg-[#FF6961] gap-2 hover:bg-[#ADBFDA]"
                           onClick={handleDeleteUser}
                         >
                           {isDeletingUser ? (
