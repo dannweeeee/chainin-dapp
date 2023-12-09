@@ -16,9 +16,19 @@ export const sidebarLinks = [
   },
 ];
 
-export const organisationTabs = [
+export const userOrganisationTabs = [
   { value: "about", label: "About", icon: "/assets/info.svg" },
   { value: "jobs", label: "Jobs", icon: "/assets/briefcase.svg" },
+];
+
+export const creatorOrganisationTabs = [
+  { value: "about", label: "About", icon: "/assets/info.svg" },
+  { value: "jobs", label: "Jobs", icon: "/assets/briefcase.svg" },
+  {
+    value: "applications",
+    label: "Applications",
+    icon: "/assets/applicant.svg",
+  },
 ];
 
 export const searchTabs = [

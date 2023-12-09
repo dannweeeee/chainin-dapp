@@ -537,6 +537,23 @@ const ChainInApi = {
     }
   },
 
+  // fetch job application by organisation id
+  fetchApplicationByOrganisationId: async (organisation_id: number) => {
+    const url = `${API_BASE_URL}/v1/application/organisation/${organisation_id}`;
+    const options = {
+      method: ApiMethods.GET,
+      headers: HEADERS,
+    };
+
+    const response = await fetch(url, options);
+    if (response.status === 200) {
+      const data = await response.json();
+      return data;
+    } else {
+      throw new Error(`Request failed with status ${response.status}`);
+    }
+  },
+
   // update job application by subgraph id
   updateApplicationBySubgraphId: async (
     subgraph_id: string,

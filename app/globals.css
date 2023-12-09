@@ -59,6 +59,14 @@
     @apply flex flex-1 items-start justify-start gap-3;
   }
 
+  .application-card {
+    @apply flex flex-col justify-between gap-4 text-white bg-[#8AA4CA] hover:bg-[#6789BA] hover:rounded-2xl rounded-2xl px-5 py-5 w-full;
+  }
+  
+  .application-card_avatar {
+    @apply flex flex-1 items-start justify-start gap-3;
+  }
+
   .no-focus {
     @apply focus-visible:ring-0 focus-visible:ring-transparent focus-visible:ring-offset-0 !important;
   }
