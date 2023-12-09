@@ -14,7 +14,7 @@ import {
   useWaitForTransaction,
   sepolia,
 } from "wagmi";
-
+import { isAddress } from "viem";
 import {
   Dialog,
   DialogClose,
@@ -26,13 +26,9 @@ import {
 } from "../ui/dialog";
 import { SyncLoader } from "react-spinners";
 
-import { useQuery } from "react-query";
 import { GraphQLClient, gql } from "graphql-request";
 
-import ApplyJobCard from "../cards/ApplyJobCard";
-import { subgraphEndpoints } from "../../constants/index";
 import { returnDestinationInfo } from "../../lib/utils";
-import { list } from "postcss";
 
 interface Props {
   listing_id: number;
@@ -80,9 +76,7 @@ interface Applicant {
   profileURL: string;
 }
 interface subgraphResponse {
-  data: {
-    newApplicants: Applicant[];
-  };
+  newApplicants: Applicant[];
 }
 
 interface ListingIDCounts {
@@ -96,6 +90,7 @@ interface subgraphReturnedData {
   fujiCount: number;
 }
 
+//TODO: This is not working
 function postNewApplicant(
   originalData: Applicant[] | undefined,
   newData: Applicant[]
@@ -131,6 +126,7 @@ function postNewApplicant(
   }
 }
 
+// Given a listing id, return the applicants from each chain and total applicants
 async function fetchAllApplicantFromSubgraph({ listing_id }: Props) {
   const sepoliaGraphQLClient = new GraphQLClient(
     returnDestinationInfo("Sepolia").subgraph
@@ -167,34 +163,60 @@ async function fetchAllApplicantFromSubgraph({ listing_id }: Props) {
   console.log("sepolia response ", sepoliaResponse);
   console.log("op response ", opResponse);
   console.log("fuji response ", fujiResponse);
-  const sepoliaApplicants = sepoliaResponse.data.newApplicants;
 
-  const sepoliaListingIDCount: ListingIDCounts = {};
+  let sepoliaListingIDCount: ListingIDCounts = {};
+  let sepoliaApplicants: Applicant[];
+  if (JSON.stringify(sepoliaResponse).length === 0 || "{}") {
+    console.log("sepolia is empty");
+    sepoliaListingIDCount[listing_id] = 0;
+    sepoliaApplicants = [];
+  } else {
+    sepoliaApplicants = sepoliaResponse.newApplicants;
 
-  sepoliaApplicants.forEach((applicant) => {
-    const listingID = applicant.listingID;
-    sepoliaListingIDCount[listingID] =
-      (sepoliaListingIDCount[listingID] || 0) + 1;
-  });
+    sepoliaApplicants.forEach((applicant) => {
+      const listingID = applicant.listingID;
+      sepoliaListingIDCount[listingID] =
+        (sepoliaListingIDCount[listingID] || 0) + 1;
+    });
+    console.log("sepolia list ", sepoliaListingIDCount);
+  }
 
-  const fujiApplicants = fujiResponse.data.newApplicants;
+  let fujiApplicants: Applicant[];
 
-  const fujiListingIDCount: ListingIDCounts = {};
+  let fujiListingIDCount: ListingIDCounts = {};
 
-  fujiApplicants.forEach((applicant) => {
-    const listingID = applicant.listingID;
-    fujiListingIDCount[listingID] = (fujiListingIDCount[listingID] || 0) + 1;
-  });
+  if (JSON.stringify(fujiResponse).length === 0 || "{}") {
+    console.log("fuji is empty");
+    fujiListingIDCount[listing_id] = 0;
+    fujiApplicants = [];
+  } else {
+    fujiApplicants = fujiResponse.newApplicants;
 
-  const opApplicants = opResponse.data.newApplicants;
+    fujiApplicants.forEach((applicant) => {
+      const listingID = applicant.listingID;
+      fujiListingIDCount[listingID] = (fujiListingIDCount[listingID] || 0) + 1;
+    });
+    console.log("fuji list ", fujiListingIDCount);
+  }
+  let opApplicants: Applicant[];
 
-  const opListingIDCount: ListingIDCounts = {};
+  let opListingIDCount: ListingIDCounts = {};
 
-  opApplicants.forEach((applicant) => {
-    const listingID = applicant.listingID;
-    opListingIDCount[listingID] = (opListingIDCount[listingID] || 0) + 1;
-  });
+  if (JSON.stringify(opResponse).length === 0 || "{}") {
+    console.log("fuji is empty");
+    opListingIDCount[listing_id] = 0;
+    opApplicants = [];
+  } else {
+    opApplicants = opResponse.newApplicants;
 
+    opApplicants.forEach((applicant) => {
+      const listingID = applicant.listingID;
+      opListingIDCount[listingID] = (opListingIDCount[listingID] || 0) + 1;
+    });
+    console.log("op list ", opListingIDCount);
+  }
+
+  console.log("op list ", opListingIDCount);
   let combinedApplicantData = [
     ...sepoliaApplicants,
     ...fujiApplicants,
@@ -207,8 +229,10 @@ async function fetchAllApplicantFromSubgraph({ listing_id }: Props) {
     optimismCount: opListingIDCount[listing_id],
     fujiCount: fujiListingIDCount[listing_id],
   };
+  console.log("return data", returnData);
   return returnData;
 }
+
 function JobHeader({ listing_id }: Props) {
   const [jobData, setJobData] = useState<JobDetails | null>(null);
   const [orgData, setOrgData] = useState<OrgDetails | null>(null);
@@ -219,10 +243,66 @@ function JobHeader({ listing_id }: Props) {
   const [optimismCount, setOptimismCount] = useState(0);
   const [fujiCount, setFujiCount] = useState(0);
   const [isClickApply, setIsClickApply] = useState(false);
+  const [selectedChain, setSelectedChain] = useState("");
+
   const { address } = useAccount();
   const router = useRouter();
   const chainsOptions = ["Sepolia", "Optimism Goerli", "Avalanche Fuji"];
-  const [selectedChain, setSelectedChain] = useState("");
+
+  const { config, error } = usePrepareContractWrite({
+    address: orgData?.results[0].nft_contract_address as `0x${string}`,
+    abi: [
+      {
+        inputs: [
+          {
+            internalType: "uint64",
+            name: "destinationChainSelector",
+            type: "uint64",
+          },
+          {
+            internalType: "address",
+            name: "destinationMinter",
+            type: "address",
+          },
+          {
+            internalType: "bool",
+            name: "isPayLink",
+            type: "bool",
+          },
+          {
+            internalType: "uint256",
+            name: "listingID",
+            type: "uint256",
+          },
+          {
+            internalType: "string",
+            name: "profileURL",
+            type: "string",
+          },
+        ],
+        name: "applyJob",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function",
+      },
+    ],
+    functionName: "applyJob",
+    args: [
+      returnDestinationInfo(selectedChain)?.selector,
+      returnDestinationInfo(selectedChain)?.minter,
+      true,
+      jobData?.results[0].listing_id,
+      `${jobData?.results[0].listing_id}/${address}`,
+    ],
+  });
+
+  console.log("config ", config);
+  const { data, write } = useContractWrite(config);
+
+  const { isLoading: txIsLoading, isSuccess: txIsSuccess } =
+    useWaitForTransaction({
+      hash: data?.hash,
+    });
 
   useEffect(() => {
     const handleJobDetails = async () => {
@@ -244,13 +324,15 @@ function JobHeader({ listing_id }: Props) {
           await fetchAllApplicantFromSubgraph({
             listing_id,
           });
-
+        // calculate the total applicant from different chain
         setSepoliaCount(subgraphReturnedData.sepoliaCount);
         setOptimismCount(subgraphReturnedData.optimismCount);
         setFujiCount(subgraphReturnedData.fujiCount);
-        setSubgraphData(subgraphReturnedData.combinedData);
 
-        postNewApplicant(subgraphData, subgraphReturnedData.combinedData);
+        setSubgraphData((prevData) => {
+          postNewApplicant(prevData, subgraphReturnedData.combinedData);
+          return subgraphReturnedData.combinedData;
+        });
       } catch (error) {
         console.error("Error fetching job data:", error);
       } finally {
@@ -406,6 +488,29 @@ function JobHeader({ listing_id }: Props) {
                       </option>
                     ))}
                   </select>
+
+                  <Button
+                    className="text-sm gap-2 mb-auto"
+                    onClick={() => {
+                      console.log("Send application");
+                      write?.();
+                    }}
+                  >
+                    <Hand />
+                    Send Application
+                  </Button>
+                  {txIsSuccess && (
+                    <div>
+                      Successfully submitted your NFT!
+                      <div>
+                        <a
+                          href={`https://mumbai.polygonscan.com/tx/${data?.hash}`}
+                        >
+                          Click to view your transaction detail!
+                        </a>
+                      </div>
+                    </div>
+                  )}
                 </>
               )}
             </>
