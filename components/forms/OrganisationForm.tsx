@@ -51,7 +51,7 @@ const OrganistionForm = () => {
       const provider = new ethers.providers.JsonRpcProvider(
         `https://polygon-mumbai.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_MUMBAI_API_KEY}`
       );
-      const deployerAddr = "0x2EcE59e879F97E3f398cB12810db8F671c27A10E"; // deployer contract on mumbai
+      const deployerAddr = "0xBcDd7fcD1fFa1AFC4783dbf345E541BC46dEE3C8"; // deployer contract on mumbai
       const signer = new ethers.Wallet(
         `0x${process.env.NEXT_PUBLIC_MUMBAI_PRIVATE_KEY}`,
         provider

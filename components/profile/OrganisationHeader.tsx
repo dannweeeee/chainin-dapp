@@ -5,12 +5,21 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import ChainInApi from "@/components/api/chainin-api";
 import ProfileSkeletonLoading from "@/components/skeletons/ProfileSkeletonLoading";
-import { BadgePlus, Cog, ExternalLink, PlusSquare } from "lucide-react";
+import { BadgePlus, BadgeX, Cog, ExternalLink, PlusSquare } from "lucide-react";
 import { Button } from "../ui/button";
-import { Dialog, Flex } from "@radix-ui/themes";
 import { QRCodeSVG } from "qrcode.react";
 import { useAccount } from "wagmi";
 import { useRouter } from "next/navigation";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "../ui/dialog";
+import { SyncLoader } from "react-spinners";
 
 interface Props {
   organisation_id: number;
@@ -38,6 +47,7 @@ function OrganisationHeader({ organisation_id }: Props) {
   const [organisationData, setOrganisationData] =
     useState<OrganisationDetails | null>(null);
   const [loading, setLoading] = useState(true);
+  const [isDeletingOrganisation, setIsDeletingOrganisation] = useState(false);
   const router = useRouter();
   const { address } = useAccount();
   // update with your contract address
@@ -93,6 +103,21 @@ function OrganisationHeader({ organisation_id }: Props) {
     handleOrganisationDetails();
   }, [organisation_id]);
 
+  const handleDeleteOrganisation = async () => {
+    try {
+      setIsDeletingOrganisation(true);
+      const organisation = await ChainInApi.deleteOrganisationByOrganisationId(
+        organisation_id
+      );
+      console.log("organisation deleted", organisation);
+      setIsDeletingOrganisation(false);
+      router.push("/home");
+    } catch (error) {
+      console.error("Error deleting organisation:", error);
+      setIsDeletingOrganisation(false);
+    }
+  };
+
   const openNewTab = (url: any) => {
     window.open(url, "_blank");
   };
@@ -129,7 +154,6 @@ function OrganisationHeader({ organisation_id }: Props) {
                 : "Unknown"}
             </p>
           </div>
-
           <div className="mt-auto flex flex-col gap-2">
             {address === organisationData?.results[0].creator_wallet_address ? (
               <div className="flex justify-end gap-2">
@@ -144,46 +168,88 @@ function OrganisationHeader({ organisation_id }: Props) {
                   Create Job
                   <PlusSquare />
                 </Button>
-                <Button className="flex items-center justify-center text-base gap-2">
+                <Button
+                  className="flex items-center justify-center text-base gap-2"
+                  onClick={() => {
+                    router.push(`/edit-organisation/${organisation_id}`);
+                  }}
+                >
                   <Cog />
                 </Button>
+                <Dialog>
+                  <DialogTrigger className="bg-[#FF6961] text-[#E6E6E6] hover:bg-[#E6E6E6]  hover:text-[#4A6FA4] text-lg font-bold rounded-2xl cursor-pointer h-10 px-4 py-2">
+                    <BadgeX />
+                  </DialogTrigger>
+                  <DialogContent className="bg-[#E6E6E6] border-none">
+                    <DialogHeader>
+                      <DialogTitle className="text-[#4A6FA4] flex items-center justify-center mb-4">
+                        Are you absolutely sure?
+                      </DialogTitle>
+                      <DialogDescription className="text-[#4A6FA4]">
+                        This action cannot be undone. This will permanently
+                        delete your organisation and remove the organisation's
+                        data from our servers.
+                      </DialogDescription>
+                    </DialogHeader>
+                    <div className="flex items-center mt-3">
+                      <DialogClose asChild>
+                        <Button className="text-sm hover:bg-[#ADBFDA]">
+                          Cancel
+                        </Button>
+                      </DialogClose>
+                      <Button
+                        className="text-sm ml-auto bg-[#FF6961] gap-2 hover:bg-[#ADBFDA]"
+                        onClick={handleDeleteOrganisation}
+                      >
+                        {isDeletingOrganisation ? (
+                          <>
+                            Deleting
+                            <SyncLoader size={3} color="#E6E6E6" />
+                          </>
+                        ) : (
+                          "Confirm"
+                        )}
+                      </Button>
+                    </div>
+                  </DialogContent>
+                </Dialog>
               </div>
             ) : null}
             <div className="flex items-center justify-center mt-12 gap-2">
-              <Dialog.Root>
-                <Dialog.Trigger>
-                  <Button className="flex items-center justify-center text-base gap-2">
-                    Add to Profile
-                    <BadgePlus />
-                  </Button>
-                </Dialog.Trigger>
-
-                <Dialog.Content className="flex items-center justify-center flex-col">
-                  <Dialog.Title>Polygon ID Verification</Dialog.Title>
-
-                  <Dialog.Description size="2" mb="4">
-                    Please scan this QR code with your mobile phone
-                    <QRCodeSVG
-                      level="Q"
-                      size={350}
-                      style={{ marginTop: "20px" }}
-                      value={JSON.stringify(qrProofRequestJson)}
-                    />
-                  </Dialog.Description>
-
-                  <Flex gap="3" mt="4" justify="end">
-                    <Dialog.Close>
-                      <Button variant="secondary" color="gray">
+              <Dialog>
+                <DialogTrigger className="bg-[#4A6FA4] text-[#E6E6E6] hover:bg-[#E6E6E6]  hover:text-[#4A6FA4] flex items-center justify-center gap-1 text-lg font-bold rounded-2xl cursor-pointer h-10 px-4 py-2">
+                  Add to Profile
+                  <BadgePlus />
+                </DialogTrigger>
+                <DialogContent className="bg-[#E6E6E6] border-none">
+                  <DialogHeader>
+                    <DialogTitle className="text-[#4A6FA4] flex items-center justify-center mb-4">
+                      Polygon ID Verification
+                    </DialogTitle>
+                    <DialogDescription className="text-[#4A6FA4] flex flex-col items-center justify-center">
+                      Please scan this QR code with your mobile phone
+                      <QRCodeSVG
+                        level="Q"
+                        size={350}
+                        style={{ marginTop: "20px" }}
+                        value={JSON.stringify(qrProofRequestJson)}
+                      />
+                    </DialogDescription>
+                  </DialogHeader>
+                  <div className="flex items-center mt-3">
+                    <DialogClose asChild>
+                      <Button className="text-sm hover:bg-[#ADBFDA]">
                         Cancel
                       </Button>
-                    </Dialog.Close>
-                    <Dialog.Close>
-                      <Button>Save</Button>
-                    </Dialog.Close>
-                  </Flex>
-                </Dialog.Content>
-              </Dialog.Root>
-
+                    </DialogClose>
+                    <DialogClose asChild>
+                      <Button className="text-sm ml-auto hover:bg-[#ADBFDA]">
+                        Save
+                      </Button>
+                    </DialogClose>
+                  </div>
+                </DialogContent>
+              </Dialog>
               <Button
                 className="flex items-center justify-center text-base gap-2 mt-auto"
                 onClick={() =>

@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import ChainInApi from "@/components/api/chainin-api";
 import ProfileSkeletonLoading from "@/components/skeletons/ProfileSkeletonLoading";
-import { FileEdit, Hand, HardHat, MapPinned } from "lucide-react";
+import { FileEdit, Hand, HardHat, MapPinned, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import {
@@ -20,6 +20,16 @@ import { GraphQLClient, gql } from "graphql-request";
 import ApplyJobCard from "../cards/ApplyJobCard";
 import { subgraphEndpoints } from "../../constants/index";
 import { returnDestinationInfo } from "../../lib/utils";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "../ui/dialog";
+import { SyncLoader } from "react-spinners";
 
 interface Props {
   listing_id: number;
@@ -118,13 +128,7 @@ function JobHeader({ listing_id }: Props) {
   const [jobData, setJobData] = useState<JobDetails | null>(null);
   const [orgData, setOrgData] = useState<OrgDetails | null>(null);
   const [loading, setLoading] = useState(true);
-  const [isClickApply, setIsClickApply] = useState(false);
-  const [selectedChain, setSelectedChain] = useState("Sepolia");
-  const [sepoliaApplicantCount, setSepoliaApplicantCount] = useState(0);
-  const [opApplicantCount, setOpApplicantCount] = useState(0);
-  const [fujiApplicantCount, setFujiApplicantCount] = useState(0);
-  const [totalApplicants, setTotalApplicants] = useState(0);
-  const [allApplicants, setAllApplicants] = useState<Applicant[] | null>(null);
+  const [totalApplicantCount, setTotalApplicantCount] = useState(0);
   const router = useRouter();
   const { address, status } = useAccount();
 
@@ -233,6 +237,32 @@ function JobHeader({ listing_id }: Props) {
     handleJobDetails();
     console.log("Conenct account from job header ", address);
   }, [listing_id]);
+
+  const handleDeleteListing = async () => {
+    try {
+      setIsDeletingListing(true);
+      const listing = await ChainInApi.deleteListingByListingId(listing_id);
+      console.log("listing deleted", listing);
+      setIsDeletingListing(false);
+      router.push("/home");
+    } catch (error) {
+      console.error("Error deleting listing:", error);
+      setIsDeletingListing(false);
+    }
+  };
+
+  const handleDeleteListing = async () => {
+    try {
+      setIsDeletingListing(true);
+      const listing = await ChainInApi.deleteListingByListingId(listing_id);
+      console.log("listing deleted", listing);
+      setIsDeletingListing(false);
+      router.push("/home");
+    } catch (error) {
+      console.error("Error deleting listing:", error);
+      setIsDeletingListing(false);
+    }
+  };
 
   const openNewTab = (url: any) => {
     window.open(url, "_blank");
