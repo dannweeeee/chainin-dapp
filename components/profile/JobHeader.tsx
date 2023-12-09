@@ -4,7 +4,14 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import ChainInApi from "@/components/api/chainin-api";
 import ProfileSkeletonLoading from "@/components/skeletons/ProfileSkeletonLoading";
-import { FileEdit, Hand, HardHat, MapPinned, Trash2 } from "lucide-react";
+import {
+  ChevronDown,
+  FileEdit,
+  Hand,
+  HardHat,
+  MapPinned,
+  Trash2,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import {
@@ -29,6 +36,14 @@ import { SyncLoader } from "react-spinners";
 import { GraphQLClient, gql } from "graphql-request";
 
 import { returnDestinationInfo } from "../../lib/utils";
+
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/select";
 
 interface Props {
   listing_id: number;
@@ -242,7 +257,6 @@ function JobHeader({ listing_id }: Props) {
   const [sepoliaCount, setSepoliaCount] = useState(0);
   const [optimismCount, setOptimismCount] = useState(0);
   const [fujiCount, setFujiCount] = useState(0);
-  const [isClickApply, setIsClickApply] = useState(false);
   const [selectedChain, setSelectedChain] = useState("");
 
   const { address } = useAccount();
@@ -465,40 +479,60 @@ function JobHeader({ listing_id }: Props) {
           ) : (
             // Logic for normal user
             <>
-              <Button
-                className="text-sm gap-2 mb-auto"
-                onClick={() => setIsClickApply(true)}
-              >
-                <Hand />
-                Apply for Job
-              </Button>
-
-              {isClickApply && (
-                <>
-                  <label htmlFor="dropdown">
-                    Select destination chain to mint the application NFT:
-                  </label>
-                  <select
-                    id="dropdown"
-                    onChange={(e) => setSelectedChain(e.target.value)}
-                  >
-                    {chainsOptions.map((option) => (
-                      <option key={option} value={option}>
-                        {option}
-                      </option>
-                    ))}
-                  </select>
-
-                  <Button
-                    className="text-sm gap-2 mb-auto"
-                    onClick={() => {
-                      console.log("Send application");
-                      write?.();
-                    }}
-                  >
-                    <Hand />
-                    Send Application
-                  </Button>
+              <Dialog>
+                <DialogTrigger className="flex items-center justify-center bg-[#4A6FA4] text-[#E6E6E6] hover:bg-[#E6E6E6] hover:text-[#4A6FA4] text-sm font-bold rounded-2xl cursor-pointer h-10 px-3 py-2 gap-2 mb-auto w-full">
+                  <Hand className="w-4 h-4" />
+                  Easy Apply
+                </DialogTrigger>
+                <DialogContent className="bg-[#E6E6E6] border-none">
+                  <DialogHeader>
+                    <DialogTitle className="text-[#4A6FA4] flex items-center justify-center mb-6">
+                      Mint your job application NFT
+                    </DialogTitle>
+                    <DialogDescription className="text-[#4A6FA4] flex items-center justify-center">
+                      <Select
+                        onValueChange={(value) => setSelectedChain(value)}
+                      >
+                        <SelectTrigger className="bg-[#4A6FA4] rounded-xl w-1/3 p-3 text-[#E6E6E6]">
+                          <SelectValue placeholder="Select Destination Chain" />
+                        </SelectTrigger>
+                        <SelectContent className="bg-[#6789BA] border-none text-[#E6E6E6] rounded-xl">
+                          {chainsOptions.map((option) => (
+                            <SelectItem
+                              className="focus:bg-[#ADBFDA] hover:text-[E6E6E6] cursor-pointer rounded-xl"
+                              value={option}
+                              key={option}
+                            >
+                              {option}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </DialogDescription>
+                  </DialogHeader>
+                  <div className="flex items-center mt-3">
+                    <DialogClose asChild>
+                      <Button className="text-sm hover:bg-[#ADBFDA]">
+                        Cancel
+                      </Button>
+                    </DialogClose>
+                    <Button
+                      className="text-sm ml-auto bg-[#4A6FA4] gap-2 hover:bg-[#ADBFDA]"
+                      onClick={() => {
+                        console.log("Sending application...");
+                        write?.();
+                      }}
+                    >
+                      {txIsLoading ? (
+                        <>
+                          Minting NFT
+                          <SyncLoader size={3} color="#E6E6E6" />
+                        </>
+                      ) : (
+                        "Mint NFT"
+                      )}
+                    </Button>
+                  </div>
                   {txIsSuccess && (
                     <div>
                       Successfully submitted your NFT!
@@ -511,8 +545,8 @@ function JobHeader({ listing_id }: Props) {
                       </div>
                     </div>
                   )}
-                </>
-              )}
+                </DialogContent>
+              </Dialog>
             </>
           )}
         </div>
