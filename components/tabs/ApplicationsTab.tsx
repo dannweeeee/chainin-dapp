@@ -59,7 +59,7 @@ const ApplicationsTab = ({ organisation_id }: { organisation_id: number }) => {
         />
       ) : (
         <p className="font-semibold flex items-center justify-center mt-8 text-white">
-          No Applications Currently
+          No Applicants Currently
         </p>
       )}
     </section>
