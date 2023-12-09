@@ -26,14 +26,6 @@ const ApplyJobCard: FC<CardProps> = ({ isOpen, onClose, onSelect }) => {
               </option>
             ))}
           </select>
-          <button
-            onClick={() => {
-              console.log("send tx");
-            }}
-            className="bg-[#0603c8]"
-          >
-            send tx
-          </button>
         </div>
       </div>
     )

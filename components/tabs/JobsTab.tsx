@@ -19,6 +19,7 @@ interface ListingDetails {
     organisation_id: number;
     organisation_logo: string;
     organisation_name: string;
+    organisation_creator: string;
   }[];
 }
 
@@ -65,6 +66,7 @@ const JobsTab = ({ organisation_id }: { organisation_id: number }) => {
             organisation_id={job.organisation_id}
             organisation_logo={job.organisation_logo}
             organisation_name={job.organisation_name}
+            organisation_creator={job.organisation_creator}
           />
         ))
       ) : (

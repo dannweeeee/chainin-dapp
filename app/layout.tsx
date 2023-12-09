@@ -8,6 +8,7 @@ import "@radix-ui/themes/styles.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://chainin.netlify.app"),
   title: "ChainIn",
   description:
     "Authenticity-Driven, Privacy-Focused Business & Employment Aggregator dApp",
@@ -22,7 +23,8 @@ export const metadata: Metadata = {
     "Polygon ID",
   ],
   openGraph: {
-    images: "https://github.com/usechainin/.github/blob/main/assets/chainin-logo.png?raw=true",
+    images:
+      "https://github.com/usechainin/.github/blob/main/assets/chainin-logo.png?raw=true",
   },
 };
 
