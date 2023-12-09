@@ -222,6 +222,11 @@
           "type": "uint64"
         },
         {
+          "internalType": "address",
+          "name": "destinationMinter",
+          "type": "address"
+        },
+        {
           "internalType": "bool",
           "name": "isPayLink",
           "type": "bool"
@@ -234,16 +239,6 @@
         {
           "internalType": "string",
           "name": "profileURL",
-          "type": "string"
-        },
-        {
-          "internalType": "string",
-          "name": "email",
-          "type": "string"
-        },
-        {
-          "internalType": "string",
-          "name": "resumeURL",
           "type": "string"
         }
       ],

@@ -188,7 +188,7 @@ function OrganisationHeader({ organisation_id }: Props) {
                       <DialogDescription className="text-[#4A6FA4]">
                         This action cannot be undone. This will permanently
                         delete your organisation and remove the organisation's
-                        from our servers.
+                        data from our servers.
                       </DialogDescription>
                     </DialogHeader>
                     <div className="flex items-center mt-3">
