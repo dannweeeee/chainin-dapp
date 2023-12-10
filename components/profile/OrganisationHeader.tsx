@@ -5,7 +5,14 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import ChainInApi from "@/components/api/chainin-api";
 import ProfileSkeletonLoading from "@/components/skeletons/ProfileSkeletonLoading";
-import { BadgePlus, BadgeX, Cog, ExternalLink, PlusSquare } from "lucide-react";
+import {
+  BadgeCheck,
+  BadgePlus,
+  BadgeX,
+  Cog,
+  ExternalLink,
+  PlusSquare,
+} from "lucide-react";
 import { Button } from "../ui/button";
 import { QRCodeSVG } from "qrcode.react";
 import { useAccount } from "wagmi";
@@ -47,6 +54,8 @@ function OrganisationHeader({ organisation_id }: Props) {
   const [organisationData, setOrganisationData] =
     useState<OrganisationDetails | null>(null);
   const [loading, setLoading] = useState(true);
+  const [verificationLoading, setVerificationLoading] = useState(false);
+  const [verified, setVerified] = useState(false);
   const [isDeletingOrganisation, setIsDeletingOrganisation] = useState(false);
   const router = useRouter();
   const { address } = useAccount();
@@ -120,6 +129,20 @@ function OrganisationHeader({ organisation_id }: Props) {
 
   const openNewTab = (url: any) => {
     window.open(url, "_blank");
+  };
+
+  const setLoadingWithTimeout = () => {
+    setVerificationLoading(true);
+    setVerified(false);
+
+    // Set loading to false after 15 seconds
+    const timeoutId = setTimeout(() => {
+      setVerificationLoading(false);
+      setVerified(true);
+    }, 15000);
+
+    // Clear the timeout if the component unmounts before it runs
+    return () => clearTimeout(timeoutId);
   };
 
   return (
@@ -242,12 +265,25 @@ function OrganisationHeader({ organisation_id }: Props) {
                         Cancel
                       </Button>
                     </DialogClose>
-                    <DialogClose asChild>
-                      <Button className="text-sm ml-auto hover:bg-[#ADBFDA]">
-                        Save
-                      </Button>
-                    </DialogClose>
+                    <Button
+                      className="text-sm ml-auto hover:bg-[#ADBFDA] gap-2"
+                      onClick={setLoadingWithTimeout}
+                    >
+                      {verificationLoading ? (
+                        <>
+                          Verifying Profile
+                          <SyncLoader size={3} color="#E6E6E6" />
+                        </>
+                      ) : (
+                        "Verify Profile"
+                      )}
+                    </Button>
                   </div>
+                  {verified ? (
+                    <div className="text-[#4A6FA4] font-semibold flex items-center justify-center gap-2 text-sm">
+                      Profile Verified <BadgeCheck />
+                    </div>
+                  ) : null}
                 </DialogContent>
               </Dialog>
               <Button
