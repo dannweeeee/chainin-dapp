@@ -105,41 +105,6 @@ interface subgraphReturnedData {
   fujiCount: number;
 }
 
-function postNewApplicant(
-  originalData: Applicant[] | undefined,
-  newData: Applicant[]
-) {
-  if (originalData == undefined) {
-    // POST all data to database
-    newData.forEach(async (applicant) => {
-      const data = await ChainInApi.createApplication(
-        applicant.id,
-        applicant.applicant,
-        Number(applicant.listingID),
-        applicant.profileURL
-      );
-      console.log("POST Application data ", data);
-    });
-  } else if (originalData) {
-    // find new applicant and post to database
-    const newEntries = newData.filter((newEntry) => {
-      return !originalData!.some((prevEntry) => prevEntry.id === newEntry.id);
-    });
-
-    // newEntries contains the entries that are not in the previous data
-    console.log("New Entries:", newEntries);
-    newEntries.forEach(async (newEntry) => {
-      const data = await ChainInApi.createApplication(
-        newEntry.id,
-        newEntry.applicant,
-        Number(newEntry.listingID),
-        newEntry.profileURL
-      );
-      console.log("POST Application data ", data);
-    });
-  }
-}
-
 // Given a listing id, return the applicants from each chain and total applicants
 async function fetchAllApplicantFromSubgraph({ listing_id }: Props) {
   const sepoliaGraphQLClient = new GraphQLClient(
@@ -356,10 +321,7 @@ function JobHeader({ listing_id }: Props) {
         setOptimismCount(subgraphReturnedData.optimismCount);
         setFujiCount(subgraphReturnedData.fujiCount);
 
-        setSubgraphData((prevData) => {
-          postNewApplicant(prevData, subgraphReturnedData.combinedData);
-          return subgraphReturnedData.combinedData;
-        });
+        setSubgraphData(subgraphReturnedData.combinedData);
       } catch (error) {
         console.error("Error fetching job data:", error);
       } finally {
