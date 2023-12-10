@@ -6,12 +6,18 @@ import ApplicationCard from "@/components/cards/ApplicationCard";
 import SkeletonLoading from "@/components/skeletons/SkeletonLoading";
 
 interface ApplicationDetails {
-  applicant_wallet_address: string;
-  listing_id: number;
-  listing_title: string;
-  organisation_id: number;
-  profile_url: string;
-  subgraph_id: string;
+  meta: {
+    duration: number;
+  };
+  success: boolean;
+  results: {
+    applicant_wallet_address: string;
+    listing_id: number;
+    listing_title: string;
+    organisation_id: number;
+    profile_url: string;
+    subgraph_id: string;
+  }[];
 }
 
 const ApplicationsTab = ({ organisation_id }: { organisation_id: number }) => {
@@ -47,16 +53,18 @@ const ApplicationsTab = ({ organisation_id }: { organisation_id: number }) => {
         <div className="w-full">
           <SkeletonLoading />
         </div>
-      ) : applications ? (
-        <ApplicationCard
-          key={applications.subgraph_id}
-          applicant_wallet_address={applications.applicant_wallet_address}
-          listing_id={applications.listing_id}
-          listing_title={applications.listing_title}
-          organisation_id={applications.organisation_id}
-          profile_url={applications.profile_url}
-          subgraph_id={applications.subgraph_id}
-        />
+      ) : applications && applications.results.length > 0 ? (
+        applications.results.map((application) => (
+          <ApplicationCard
+            key={application.subgraph_id}
+            applicant_wallet_address={application.applicant_wallet_address}
+            listing_id={application.listing_id}
+            listing_title={application.listing_title}
+            organisation_id={application.organisation_id}
+            profile_url={application.profile_url}
+            subgraph_id={application.subgraph_id}
+          />
+        ))
       ) : (
         <p className="font-semibold flex items-center justify-center mt-8 text-white">
           No Applicants Currently
