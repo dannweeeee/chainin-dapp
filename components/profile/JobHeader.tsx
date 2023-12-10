@@ -105,7 +105,6 @@ interface subgraphReturnedData {
   fujiCount: number;
 }
 
-//TODO: This is not working
 function postNewApplicant(
   originalData: Applicant[] | undefined,
   newData: Applicant[]
@@ -181,7 +180,10 @@ async function fetchAllApplicantFromSubgraph({ listing_id }: Props) {
 
   let sepoliaListingIDCount: ListingIDCounts = {};
   let sepoliaApplicants: Applicant[];
-  if (JSON.stringify(sepoliaResponse).length === 0 || "{}") {
+  if (sepoliaResponse.newApplicants) {
+    console.log("respolie ", sepoliaResponse.newApplicants);
+  }
+  if (Object.keys(sepoliaResponse.newApplicants).length === 0) {
     console.log("sepolia is empty");
     sepoliaListingIDCount[listing_id] = 0;
     sepoliaApplicants = [];
@@ -200,7 +202,8 @@ async function fetchAllApplicantFromSubgraph({ listing_id }: Props) {
 
   let fujiListingIDCount: ListingIDCounts = {};
 
-  if (JSON.stringify(fujiResponse).length === 0 || "{}") {
+  if (Object.keys(fujiResponse.newApplicants).length === 0) {
+    console.log("stringify", JSON.stringify(fujiResponse));
     console.log("fuji is empty");
     fujiListingIDCount[listing_id] = 0;
     fujiApplicants = [];
@@ -217,8 +220,9 @@ async function fetchAllApplicantFromSubgraph({ listing_id }: Props) {
 
   let opListingIDCount: ListingIDCounts = {};
 
-  if (JSON.stringify(opResponse).length === 0 || "{}") {
-    console.log("fuji is empty");
+  if (Object.keys(opResponse.newApplicants).length === 0) {
+    console.log("stringfiy,", JSON.stringify(opResponse));
+    console.log("op is empty");
     opListingIDCount[listing_id] = 0;
     opApplicants = [];
   } else {
@@ -240,9 +244,18 @@ async function fetchAllApplicantFromSubgraph({ listing_id }: Props) {
 
   const returnData = {
     combinedData: combinedApplicantData,
-    sepoliaCount: sepoliaListingIDCount[listing_id],
-    optimismCount: opListingIDCount[listing_id],
-    fujiCount: fujiListingIDCount[listing_id],
+    sepoliaCount:
+      sepoliaListingIDCount[listing_id] == undefined
+        ? 0
+        : sepoliaListingIDCount[listing_id],
+    optimismCount:
+      opListingIDCount[listing_id] == undefined
+        ? 0
+        : opListingIDCount[listing_id],
+    fujiCount:
+      fujiListingIDCount[listing_id] == undefined
+        ? 0
+        : fujiListingIDCount[listing_id],
   };
   console.log("return data", returnData);
   return returnData;
@@ -411,13 +424,16 @@ function JobHeader({ listing_id }: Props) {
               <p className="text-base mt-1 text-white flex gap-2">
                 <MapPinned />
                 Total Applicant: {sepoliaCount + fujiCount + optimismCount}
-                {sepoliaCount == 0
+                <br />
+                {sepoliaCount != 0
                   ? `${sepoliaCount} member(s) applied to Sepolia `
                   : ""}
-                {optimismCount == 0
+                <br />
+                {optimismCount != 0
                   ? `${optimismCount} member(s) applied to Optimism Goerli `
                   : ""}
-                {fujiCount == 0
+                <br />
+                {fujiCount != 0
                   ? `${fujiCount} member(s) applied to Avalanche Fuji`
                   : ""}
               </p>
