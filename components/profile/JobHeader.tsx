@@ -10,6 +10,7 @@ import {
   Hand,
   HardHat,
   MapPinned,
+  MousePointerClick,
   Trash2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -321,7 +322,13 @@ function JobHeader({ listing_id }: Props) {
         setOptimismCount(subgraphReturnedData.optimismCount);
         setFujiCount(subgraphReturnedData.fujiCount);
 
-        setSubgraphData(subgraphReturnedData.combinedData);
+        {
+          txIsSuccess &&
+            setSubgraphData((prevData) => {
+              postNewApplicant(prevData, subgraphReturnedData.combinedData);
+              return subgraphReturnedData.combinedData;
+            });
+        }
       } catch (error) {
         console.error("Error fetching job data:", error);
       } finally {
@@ -330,6 +337,41 @@ function JobHeader({ listing_id }: Props) {
     };
     handleJobDetails();
   }, [listing_id]);
+
+  function postNewApplicant(
+    originalData: Applicant[] | undefined,
+    newData: Applicant[]
+  ) {
+    if (originalData == undefined) {
+      // POST all data to database
+      newData.forEach(async (applicant) => {
+        const data = await ChainInApi.createApplication(
+          applicant.id,
+          applicant.applicant,
+          Number(applicant.listingID),
+          applicant.profileURL
+        );
+        console.log("POST Application data ", data);
+      });
+    } else if (originalData) {
+      // find new applicant and post to database
+      const newEntries = newData.filter((newEntry) => {
+        return !originalData!.some((prevEntry) => prevEntry.id === newEntry.id);
+      });
+
+      // newEntries contains the entries that are not in the previous data
+      console.log("New Entries:", newEntries);
+      newEntries.forEach(async (newEntry) => {
+        const data = await ChainInApi.createApplication(
+          newEntry.id,
+          newEntry.applicant,
+          Number(newEntry.listingID),
+          newEntry.profileURL
+        );
+        console.log("POST Application data ", data);
+      });
+    }
+  }
 
   const handleDeleteListing = async () => {
     try {
@@ -342,6 +384,10 @@ function JobHeader({ listing_id }: Props) {
       console.error("Error deleting listing:", error);
       setIsDeletingListing(false);
     }
+  };
+
+  const openNewTab = (url: any) => {
+    window.open(url, "_blank");
   };
 
   return (
@@ -512,15 +558,19 @@ function JobHeader({ listing_id }: Props) {
                     </Button>
                   </div>
                   {txIsSuccess && (
-                    <div>
-                      Successfully submitted your NFT!
-                      <div>
-                        <a
-                          href={`https://mumbai.polygonscan.com/tx/${data?.hash}`}
-                        >
-                          Click to view your transaction detail!
-                        </a>
-                      </div>
+                    <div className="text-[#4A6FA4] font-semibold flex items-center justify-center flex-col text-sm">
+                      🍾 Successfully submitted your NFT! 🍾
+                      <Button
+                        onClick={() =>
+                          openNewTab(
+                            `https://mumbai.polygonscan.com/tx/${data?.hash}`
+                          )
+                        }
+                        className="text-sm mt-2 hover:bg-[#ADBFDA] gap-2"
+                      >
+                        <MousePointerClick />
+                        View your transaction details
+                      </Button>
                     </div>
                   )}
                 </DialogContent>
